@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SunSafety - Protection Tips</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      color: #132b5c;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px 50px;
+    }
+
+    .navbar {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .nav-links a.active {
+      color: #2563ff;
+    }
+
+    .demo-btn {
+      background: #132b5c;
+      color: white;
+      padding: 20px 28px;
+      border-radius: 16px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .hero {
+      display: block;
+      min-height: auto;
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #2563ff;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow-icon {
+      width: 18px;
+      height: 18px;
+      background: #2563ff;
+      border-radius: 4px;
+    }
+
+    .hero-title {
+      font-size: 68px;
+      font-weight: 800;
+      line-height: 0.95;
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      color: #8a8ea0;
+    }
+
+    .hero-text {
+      font-size: 20px;
+      color: #6d7386;
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h3 {
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #6d7386;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid #e3e8f1;
+      background: #fbfcff;
+      font-size: 16px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    .uv-badge {
+      background: #eef3ff;
+      border: 1px solid #d9e4ff;
+      color: #2563ff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+      font-size: 16px;
+      border-radius: 16px;
+      padding: 16px 24px;
+    }
+
+    .primary-btn {
+      background: #2563ff;
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #ececef;
+      color: #132b5c;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .result-box {
+      background: #f7f8fc;
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 18px;
+      color: #51627f;
+      line-height: 1.7;
+      min-height: 90px;
+      font-size: 16px;
+    }
+
+    .tips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 6px;
+    }
+
+    .tip-item {
+      background: #fbfcff;
+      border: 1px solid #edf1f7;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .tip-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: #eef3ff;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .tip-icon::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background: #2563ff;
+      border-radius: 5px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .tip-text strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .tip-text span {
+      color: #6d7386;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .full-card {
+      margin-top: 24px;
+    }
+
+    .status-note {
+      color: #6d7386;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .list-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #e3e8f1;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .reminder-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .reminder-modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 460px;
+      background: white;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    .modal-box h3 {
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .modal-text {
+      color: #6d7386;
+      line-height: 1.6;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .modal-btn {
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+      font-size: 15px;
+      border-radius: 14px;
+      padding: 12px 18px;
+    }
+
+    .modal-cancel {
+      background: #ececef;
+      color: #132b5c;
+    }
+
+    .modal-save {
+      background: #2563ff;
+      color: white;
+    }
+
+    @media (max-width: 1100px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        font-size: 54px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        height: auto;
+        padding: 20px 0;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .hero-title {
+        font-size: 42px;
+      }
+
+      .hero-text {
+        font-size: 17px;
+      }
+
+      .button-row,
+      .modal-buttons {
+        flex-direction: column;
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .modal-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="navbar">
+      <div class="logo">SunSafety</div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="uv.html">UV Dashboard</a>
+        <a href="awareness.html">Awareness</a>
+        <a href="tips.html" class="active">Protection Tips</a>
+      </nav>
+
+      <a class="demo-btn" href="uv.html">Get Started →</a>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">
+          <div class="eyebrow-icon"></div>
+          SUN PROTECTION GUIDE
+        </div>
+
+        <h1 class="hero-title">
+          Protect <span>your skin</span><br>
+          before you go<br>
+          outside.
+        </h1>
+
+        <p class="hero-text">
+          Learn how much sunscreen to use, set reminders, and follow simple
+          protection tips for stronger UV conditions.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>Sunscreen Dosage Calculator</h3>
+
+        <div id="currentUvDosage" class="uv-badge">
+          Current UV: Not available
+        </div>
+
+        <label class="label">Enter UV level</label>
+        <input id="uvInput" class="input" type="number" min="0" max="15" step="0.1" placeholder="Example: 8" />
+
+        <label class="label">Choose body area</label>
+        <select id="bodyArea" class="select">
+          <option value="face">Face only</option>
+          <option value="arms">Face and arms</option>
+          <option value="full">Full exposed body</option>
+        </select>
+
+        <div class="button-row">
+          <button class="primary-btn" onclick="calculateDosage()">Calculate</button>
+          <button class="secondary-btn" onclick="useCurrentUV()">Use Current UV</button>
+        </div>
+
+        <div id="dosageResult" class="result-box">
+          Your sunscreen dosage result will appear here.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Reminder System</h3>
+
+        <div id="currentUvReminder" class="uv-badge">
+          Current UV: Not available
+        </div>
+
+        <div class="button-row">
+          <button class="primary-btn" onclick="openReminderModal()">Set Reminder</button>
+          <button class="secondary-btn" onclick="suggestReminderInterval()">Suggest Interval</button>
+        </div>
+
+        <div id="reminderSuggestion" class="result-box">
+          UV-based reminder suggestion will appear here.
+        </div>
+
+        <div id="reminderResult" class="result-box">
+          No reminder has been set yet.
+        </div>
+
+        <h3 style="margin-top: 24px;">Reminder List</h3>
+        <div id="reminderList" class="result-box">
+          No reminders saved yet.
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="card full-card">
+      <h3>General Protection Tips</h3>
+
+      <div class="tips-list">
+        <div class="tip-item">
+          <div class="tip-icon"></div>
+          <div class="tip-text">
+            <strong>Use SPF30+ or higher</strong>
+            <span>Apply sunscreen before going outside and reapply it regularly, especially during stronger UV conditions.</span>
+          </div>
+        </div>
+
+        <div class="tip-item">
+          <div class="tip-icon"></div>
+          <div class="tip-text">
+            <strong>Wear protective clothing</strong>
+            <span>Choose clothing that covers more skin, and add a hat and sunglasses when UV levels are high.</span>
+          </div>
+        </div>
+
+        <div class="tip-item">
+          <div class="tip-icon"></div>
+          <div class="tip-text">
+            <strong>Stay in shade</strong>
+            <span>Try to reduce direct sun exposure during the strongest part of the day, especially near peak UV time.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="reminderModal" class="reminder-modal">
+    <div class="modal-box">
+      <h3>Set Reminder</h3>
+      <div class="modal-text">
+        Enter your email address and choose a reminder time. Repeated reminders will be suggested based on the current UV level.
+      </div>
+
+      <div id="currentUvModal" class="uv-badge">
+        Current UV: Not available
+      </div>
+
+      <label class="label">Email address</label>
+      <input
+        id="reminderEmail"
+        class="input"
+        type="email"
+        placeholder="example@email.com"
+      />
+
+      <label class="label">Reminder time</label>
+      <input
+        id="reminderTime"
+        class="input"
+        type="datetime-local"
+      />
+
+      <div class="modal-buttons">
+        <button class="modal-btn modal-cancel" onclick="closeReminderModal()">Cancel</button>
+        <button class="modal-btn modal-save" onclick="saveReminder()">Save Reminder</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let reminderTimers = [];
+
+    function getCurrentUV() {
+      const savedUV = localStorage.getItem("currentUV");
+
+      if (savedUV !== null && savedUV !== "" && !isNaN(Number(savedUV))) {
+        return Number(savedUV);
+      }
+
+      return null;
+    }
+
+    function updateCurrentUVDisplay() {
+      const uv = getCurrentUV();
+      const text = uv !== null ? `Current UV: ${uv}` : "Current UV: Not available";
+
+      document.getElementById("currentUvDosage").textContent = text;
+      document.getElementById("currentUvReminder").textContent = text;
+      document.getElementById("currentUvModal").textContent = text;
+    }
+
+    function useCurrentUV() {
+      const uv = getCurrentUV();
+      const result = document.getElementById("dosageResult");
+
+      if (uv === null) {
+        result.textContent = "No UV data found. Please visit the UV Dashboard first.";
+        return;
+      }
+
+      document.getElementById("uvInput").value = uv;
+    }
+
+    function calculateDosage() {
+      const uv = Number(document.getElementById("uvInput").value);
+      const bodyArea = document.getElementById("bodyArea").value;
+      const result = document.getElementById("dosageResult");
+
+      if (isNaN(uv)) {
+        result.textContent = "Please enter a UV level first.";
+        return;
+      }
+
+      let baseDose = "";
+
+      if (uv <= 2) {
+        baseDose = "Light protection is recommended.";
+      } else if (uv <= 5) {
+        baseDose = "Use a moderate amount of sunscreen.";
+      } else if (uv <= 7) {
+        baseDose = "Use a generous amount of sunscreen.";
+      } else {
+        baseDose = "Use a high amount of sunscreen and reapply carefully.";
+      }
+
+      let areaText = "";
+
+      if (bodyArea === "face") {
+        areaText = "Suggested amount: around 1 teaspoon or 2 pumps for the face and neck.";
+      } else if (bodyArea === "arms") {
+        areaText = "Suggested amount: around 2 teaspoons or 3–4 pumps for face and arms.";
+      } else {
+        areaText = "Suggested amount: around 3 teaspoons or 5+ pumps for exposed body areas.";
+      }
+
+      result.textContent = `${baseDose} ${areaText}`;
+    }
+
+    function getReminderIntervalByUv(uv) {
+      if (uv <= 2) {
+        return 4;
+      } else if (uv <= 5) {
+        return 3;
+      } else if (uv <= 7) {
+        return 2;
+      } else {
+        return 1;
+      }
+    }
+
+    function suggestReminderInterval() {
+      const uv = getCurrentUV();
+      const suggestionBox = document.getElementById("reminderSuggestion");
+
+      if (uv === null) {
+        suggestionBox.textContent = "No UV data available. Please get the UV value from the UV Dashboard first.";
+        return;
+      }
+
+      const intervalHours = getReminderIntervalByUv(uv);
+      suggestionBox.textContent =
+        `Suggested repeated reminder interval: every ${intervalHours} hour(s) based on current UV level ${uv}.`;
+    }
+
+    function openReminderModal() {
+      updateCurrentUVDisplay();
+      document.getElementById("reminderModal").classList.add("show");
+    }
+
+    function closeReminderModal() {
+      document.getElementById("reminderModal").classList.remove("show");
+    }
+
+    function getSavedReminders() {
+      return JSON.parse(localStorage.getItem("reminders")) || [];
+    }
+
+    function setSavedReminders(reminders) {
+      localStorage.setItem("reminders", JSON.stringify(reminders));
+    }
+
+    function saveReminder() {
+      const email = document.getElementById("reminderEmail").value.trim();
+      const reminderTime = document.getElementById("reminderTime").value;
+      const uv = getCurrentUV();
+      const result = document.getElementById("reminderResult");
+
+      if (!email || !reminderTime) {
+        result.textContent = "Please enter email and reminder time.";
+        return;
+      }
+
+      if (uv === null) {
+        result.textContent = "No UV data found. Please visit the UV Dashboard first.";
+        return;
+      }
+
+      const repeatIntervalHours = getReminderIntervalByUv(uv);
+
+      const reminder = {
+        id: Date.now(),
+        email: email,
+        reminderTime: reminderTime,
+        uvLevel: uv,
+        repeatIntervalHours: repeatIntervalHours
+      };
+
+      const reminders = getSavedReminders();
+      reminders.push(reminder);
+      setSavedReminders(reminders);
+
+      result.textContent =
+        `Reminder saved for ${email} at ${formatDateTime(reminderTime)}. Repeated reminders will be scheduled every ${repeatIntervalHours} hour(s).`;
+
+      renderReminderList();
+      scheduleReminder(reminder);
+      closeReminderModal();
+
+      document.getElementById("reminderEmail").value = "";
+      document.getElementById("reminderTime").value = "";
+    }
+
+    function renderReminderList() {
+      const reminderList = document.getElementById("reminderList");
+      const reminders = getSavedReminders();
+
+      if (reminders.length === 0) {
+        reminderList.innerHTML = "No reminders saved yet.";
+        return;
+      }
+
+      reminderList.innerHTML = reminders.map(reminder => {
+        return `
+          <div class="list-item">
+            <strong>Email:</strong> ${reminder.email}<br>
+            <strong>First reminder:</strong> ${formatDateTime(reminder.reminderTime)}<br>
+            <strong>UV level:</strong> ${reminder.uvLevel}<br>
+            <strong>Repeat interval:</strong> every ${reminder.repeatIntervalHours} hour(s)
+          </div>
+        `;
+      }).join("");
+    }
+
+    function formatDateTime(dateTimeString) {
+      const date = new Date(dateTimeString);
+      return date.toLocaleString();
+    }
+
+    function scheduleReminder(reminder) {
+      const firstTime = new Date(reminder.reminderTime).getTime();
+      const now = Date.now();
+      const delay = firstTime - now;
+
+      if (delay <= 0) {
+        return;
+      }
+
+      const firstTimer = setTimeout(() => {
+        sendReminderNotification(reminder);
+
+        const repeatTimer = setInterval(() => {
+          sendReminderNotification(reminder);
+        }, reminder.repeatIntervalHours * 60 * 60 * 1000);
+
+        reminderTimers.push(repeatTimer);
+      }, delay);
+
+      reminderTimers.push(firstTimer);
+    }
+
+    function sendReminderNotification(reminder) {
+      alert(`Reminder for ${reminder.email}: Time to reapply sunscreen.`);
+    }
+
+    function loadAndScheduleReminders() {
+      const reminders = getSavedReminders();
+      reminders.forEach(reminder => scheduleReminder(reminder));
+      renderReminderList();
+    }
+
+    window.onload = function () {
+      updateCurrentUVDisplay();
+      loadAndScheduleReminders();
+    };
+  </script>
+</body>
+</html>
