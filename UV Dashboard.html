@@ -620,11 +620,11 @@
       const pill = getPillStyle(risk.level);
 
       document.getElementById("uvNumber").textContent = uv.toFixed(1);
-      
+      localStorage.setItem("currentUV", uv);
       document.getElementById("uvPill").textContent = risk.level;
       document.getElementById("uvPill").style.background = pill.bg;
       document.getElementById("uvPill").style.color = pill.color;
-
+      localStorage.setItem("currentUV", uv);
       document.getElementById("burnTime").textContent = risk.burn;
       document.getElementById("peakTime").textContent = findPeakTime(hourlyTimes, hourlyUv);
       document.getElementById("tempValue").textContent = temp !== undefined ? `${temp}°C` : "--";
