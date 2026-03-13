@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SunSafety</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      color: #132b5c;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    .navbar {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .nav-links a.active {
+      color: #2563ff;
+    }
+
+    .demo-btn {
+      background: #132b5c;
+      color: white;
+      padding: 20px 28px;
+      border-radius: 16px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .hero-full {
+      width: 100%;
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 40px;
+    }
+
+    .hero-text-side {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 60px;
+      padding-right: 20px;
+    }
+
+    .hero-text-inner {
+      max-width: 620px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #2563ff;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+
+    .eyebrow-icon {
+      width: 18px;
+      height: 18px;
+      background: #2563ff;
+      border-radius: 4px;
+    }
+
+    .hero-title {
+      font-size: 80px;
+      font-weight: 800;
+      line-height: 0.95;
+      margin-bottom: 30px;
+    }
+
+    .hero-title span {
+      color: #8a8ea0;
+    }
+
+    .hero-text {
+      font-size: 20px;
+      color: #6d7386;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn {
+      background: #2563ff;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 16px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .secondary-btn {
+      background: #ececef;
+      padding: 20px 30px;
+      border-radius: 16px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .hero-image-side {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 720px;
+      object-fit: cover;
+      border-radius: 0;
+      display: block;
+      margin-left:-120px;
+    }
+
+    .feature-strip {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      transition: 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: #eef3ff;
+      border: 2px solid #2563ff;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .icon-1::after {
+      content: "";
+      width: 14px;
+      height: 14px;
+      background: #2563ff;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .icon-2::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background: #2563ff;
+      border-radius: 4px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .icon-3::after {
+      content: "";
+      width: 20px;
+      height: 4px;
+      background: #2563ff;
+      border-radius: 10px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: #6d7386;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1000px) {
+      .hero-full {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-text-side {
+        padding: 0 20px;
+      }
+
+      .hero-title {
+        font-size: 55px;
+      }
+
+      .hero-image {
+        height: 420px;
+        border-radius: 24px;
+      }
+
+      .feature-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <header class="navbar">
+      <div class="logo">SunSafety</div>
+
+      <nav class="nav-links">
+        <a class="active" href="#">Home</a>
+        <a href="#">UV Dashboard</a>
+        <a href="#">Awareness</a>
+        <a href="#">Protection Tips</a>
+      </nav>
+
+      <a class="demo-btn" href="#">Get Started →</a>
+    </header>
+  </div>
+
+  <section class="hero-full">
+    <div class="hero-text-side">
+      <div class="hero-text-inner">
+        <div class="eyebrow">
+          <div class="eyebrow-icon"></div>
+          SUN SAFETY PLATFORM
+        </div>
+
+        <h1 class="hero-title">
+          Check <span>UV levels</span><br>
+          before you go<br>
+          outside.
+        </h1>
+
+        <p class="hero-text">
+          We provide simple sun protection support to help young adults stay safe.
+          From real-time UV levels to clothing advice and sunscreen reminders.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-btn" href="#">Open Dashboard →</a>
+          <a class="secondary-btn" href="#">Protection Tips ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-image-side">
+      <img class="hero-image" src="beach.webp" alt="Sun protection on the beach" />
+    </div>
+  </section>
+
+  <div class="page">
+    <section class="feature-strip">
+      <div class="feature-card">
+        <div class="feature-icon icon-1"></div>
+        <h3>Real-time UV</h3>
+        <p>
+          Check the current UV level before going outside and understand the risk quickly.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon icon-2"></div>
+        <h3>Clothing Advice</h3>
+        <p>
+          Get easy recommendations on hats, sunglasses, and protective clothing.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon icon-3"></div>
+        <h3>Sun Protection</h3>
+        <p>
+          Learn how much sunscreen to apply and when to reapply it during the day.
+        </p>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

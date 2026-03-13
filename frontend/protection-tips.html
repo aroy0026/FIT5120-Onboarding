@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSafety - Protection Tips</title>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/protection-tips.css">
+</head>
+
+<body>
+
+<main class="container">
+
+  <section class="hero">
+
+    <div>
+      <div class="eyebrow">SUN PROTECTION GUIDE</div>
+
+      <h1 class="hero-title">
+        Protect <span>your skin</span><br>
+        before you go outside
+      </h1>
+
+      <p class="hero-description">
+        Learn how much sunscreen to use, set reminders, and follow simple
+        protection tips for stronger UV conditions.
+      </p>
+    </div>
+
+  </section>
+
+  <section class="grid">
+
+    <!-- Sunscreen calculator -->
+
+    <div class="card">
+
+      <h3>Sunscreen Dosage Calculator</h3>
+
+      <div id="currentUvDosage" class="uv-badge">
+        Current UV: Not available
+      </div>
+
+      <label>Enter UV level</label>
+      <input id="uvInput" type="number" placeholder="Example: 8">
+
+      <label>Choose body area</label>
+      <select id="bodyArea">
+        <option value="face">Face only</option>
+        <option value="arms">Face and arms</option>
+        <option value="full">Full exposed body</option>
+      </select>
+
+      <div class="button-row">
+        <button class="primary-btn" onclick="calculateDosage()">Calculate</button>
+        <button class="secondary-btn" onclick="useCurrentUV()">Use Current UV</button>
+      </div>
+
+      <div id="dosageResult" class="result-box">
+        Your sunscreen dosage result will appear here.
+      </div>
+
+    </div>
+
+    <!-- Reminder system -->
+
+    <div class="card">
+
+      <h3>Reminder System</h3>
+
+      <div id="currentUvReminder" class="uv-badge">
+        Current UV: Not available
+      </div>
+
+      <div class="button-row">
+        <button class="primary-btn" onclick="openReminderModal()">Set Reminder</button>
+        <button class="secondary-btn" onclick="suggestReminderInterval()">Suggest Interval</button>
+      </div>
+
+      <div id="reminderSuggestion" class="result-box">
+        UV-based reminder suggestion will appear here.
+      </div>
+
+      <div id="reminderResult" class="result-box">
+        No reminder has been set yet.
+      </div>
+
+      <h3 style="margin-top:20px;">Reminder List</h3>
+
+      <div id="reminderList" class="result-box">
+        No reminders saved yet.
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<div id="reminderModal" class="modal">
+
+  <div class="modal-box">
+
+    <h3>Set Reminder</h3>
+
+    <label>Email address</label>
+    <input id="reminderEmail" type="email">
+
+    <label>Reminder time</label>
+    <input id="reminderTime" type="datetime-local">
+
+    <div class="modal-buttons">
+      <button onclick="closeReminderModal()">Cancel</button>
+      <button onclick="saveReminder()">Save</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/protection-tips.js"></script>
+
+</body>
+</html>
