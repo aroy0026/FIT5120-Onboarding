@@ -1,21 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SunSafety - UV Dashboard</title>
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    crossorigin=""
-  >
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/uv-dashboard.css">
+
+  <style>
+    /* Simple navbar styles, can be moved into your CSS files */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #0b3c5d;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #ffcc33;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #0b3c5d;
+      font-size: 18px;
+    }
+
+    .navbar-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+    }
+
+    .nav-link {
+      color: #e6f0ff;
+      text-decoration: none;
+      padding-bottom: 3px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+      border-bottom-color: #ffcc33;
+    }
+
+    .nav-link.active {
+      color: #ffffff;
+      border-bottom-color: #ffcc33;
+      font-weight: 600;
+    }
+  </style>
 </head>
 
 <body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <div class="navbar-logo">UV</div>
+      <div class="navbar-title">SunSafety</div>
+    </div>
+    <nav class="navbar-nav">
+      <a href="uv-dashboard.html" class="nav-link active">UV Dashboard</a>
+      <a href="awareness.html" class="nav-link">Awareness</a>
+      <a href="protection-tips.html" class="nav-link">Protection Tips</a>
+    </nav>
+  </header>
+
   <main class="container">
 
     <section class="hero">
@@ -105,11 +178,9 @@
 
   </main>
 
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    crossorigin=""
-  ></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/uv-dashboard.js"></script>
 </body>
+
 </html>
