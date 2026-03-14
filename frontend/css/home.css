@@ -1,0 +1,160 @@
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 56px;
+  padding: 40px 0 20px;
+  margin-bottom: 72px;
+}
+
+.hero-text {
+  max-width: 560px;
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2563ff;
+  margin-bottom: 18px;
+}
+
+.hero-title {
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  color: #132b5c;
+}
+
+.hero-title span {
+  color: #8a8ea0;
+}
+
+.hero-description {
+  max-width: 520px;
+  font-size: 18px;
+  line-height: 1.65;
+  color: #5f6b85;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.hero-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 560px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 8px;
+}
+
+.feature-card {
+  background: #ffffff;
+  padding: 26px 22px;
+  border-radius: 18px;
+  border: 1px solid #e9edf5;
+  box-shadow: 0 8px 20px rgba(19, 43, 92, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(19, 43, 92, 0.1);
+}
+
+.feature-card h3 {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #132b5c;
+}
+
+.feature-card p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #647089;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-top: 20px;
+    margin-bottom: 52px;
+  }
+
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 42px;
+  }
+
+  .hero-description {
+    max-width: 100%;
+    font-size: 17px;
+  }
+
+  .hero-image {
+    max-width: 100%;
+    height: 340px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 34px;
+  }
+
+  .hero-description {
+    font-size: 16px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-image {
+    height: 280px;
+  }
+
+  .feature-card {
+    padding: 22px 18px;
+  }
+}
