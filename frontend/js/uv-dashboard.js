@@ -1,5 +1,6 @@
 let map;
 let marker;
+let uvChartInstance;
 
 function initMap() {
   map = L.map("map").setView([-37.8136, 144.9631], 11);
@@ -33,6 +34,35 @@ function getPillStyle(level) {
   return { bg: "#eadcff", color: "#6e32b6" };
 }
 
+function showUvAlert(uv, riskLevel) {
+  const alertBox = document.getElementById("uvAlert");
+  const alertTitle = document.getElementById("uvAlertTitle");
+  const alertMessage = document.getElementById("uvAlertMessage");
+
+  alertBox.className = "uv-alert hidden";
+
+  if (uv >= 11) {
+    alertBox.className = "uv-alert extreme";
+    alertTitle.textContent = "Extreme UV Alert";
+    alertMessage.textContent = "Avoid direct sun exposure if possible. Seek shade immediately, wear protective clothing, and apply SPF50+ sunscreen.";
+    return;
+  }
+
+  if (uv >= 8) {
+    alertBox.className = "uv-alert very-high";
+    alertTitle.textContent = "Very High UV Alert";
+    alertMessage.textContent = "Your UV level is very high. Find shade, wear sunglasses, and apply SPF50+ sunscreen now.";
+    return;
+  }
+
+  if (uv >= 6) {
+    alertBox.className = "uv-alert high";
+    alertTitle.textContent = "High UV Alert";
+    alertMessage.textContent = "UV is high. Wear protective clothing and apply sunscreen before staying outdoors.";
+    return;
+  }
+}
+
 function findPeakTime(times, values) {
   if (!times || !values || !values.length) return "--";
   let index = 0;
@@ -42,44 +72,64 @@ function findPeakTime(times, values) {
   return times[index].slice(11, 16);
 }
 
-function drawChart(values) {
-  const canvas = document.getElementById("uvChart");
-  const ctx = canvas.getContext("2d");
-  const w = canvas.width;
-  const h = canvas.height;
+function drawChart(times, values) {
+  const ctx = document.getElementById("uvChart").getContext("2d");
 
-  ctx.clearRect(0, 0, w, h);
+  if (uvChartInstance) {
+    uvChartInstance.destroy();
+  }
 
-  const left = 40;
-  const top = 15;
-  const chartW = w - 60;
-  const chartH = h - 45;
+  const labels = times.map(time => time.slice(11, 16));
 
-  ctx.strokeStyle = "#dbe2ee";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(left, top, chartW, chartH);
-
-  if (!values || !values.length) return;
-
-  const max = Math.max(...values, 1);
-
-  ctx.beginPath();
-  ctx.strokeStyle = "#2563ff";
-  ctx.lineWidth = 3;
-
-  values.forEach((value, index) => {
-    const x = left + (index / (values.length - 1)) * chartW;
-    const y = top + chartH - (value / max) * chartH;
-    if (index === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  uvChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "UV Index",
+          data: values,
+          borderColor: "#2563ff",
+          backgroundColor: "rgba(37, 99, 255, 0.15)",
+          borderWidth: 3,
+          tension: 0.35,
+          fill: true,
+          pointRadius: 3,
+          pointHoverRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Time"
+          },
+          ticks: {
+            maxTicksLimit: 8
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "UV Index"
+          }
+        }
+      }
+    }
   });
-
-  ctx.stroke();
-
-  ctx.fillStyle = "#7b8498";
-  ctx.font = "12px Arial";
-  ctx.fillText("00:00", left, h - 10);
-  ctx.fillText("24:00", w - 48, h - 10);
 }
 
 async function fetchUvData(lat, lon) {
@@ -104,9 +154,11 @@ function renderAll(data, lat, lon, label) {
 
   document.getElementById("uvNumber").textContent = uv.toFixed(1);
   localStorage.setItem("currentUV", uv);
+
   document.getElementById("uvPill").textContent = risk.level;
   document.getElementById("uvPill").style.background = pill.bg;
   document.getElementById("uvPill").style.color = pill.color;
+
   document.getElementById("burnTime").textContent = risk.burn;
   document.getElementById("peakTime").textContent = findPeakTime(hourlyTimes, hourlyUv);
   document.getElementById("tempValue").textContent = temp !== undefined ? `${temp}°C` : "--";
@@ -114,8 +166,9 @@ function renderAll(data, lat, lon, label) {
   document.getElementById("locationChip").textContent = label;
   document.getElementById("statusText").textContent = `Loaded UV data for ${label}.`;
 
+  showUvAlert(uv, risk.level);
   updateMap(lat, lon, label);
-  drawChart(hourlyUv.slice(0, 24));
+  drawChart(hourlyTimes.slice(0, 24), hourlyUv.slice(0, 24));
 }
 
 async function loadCurrentLocation() {

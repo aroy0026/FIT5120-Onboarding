@@ -37,6 +37,11 @@
         </div>
 
         <p id="statusText" class="status-text">Ready to load UV data.</p>
+
+        <div id="uvAlert" class="uv-alert hidden">
+          <strong id="uvAlertTitle">UV Alert</strong>
+          <p id="uvAlertMessage">High UV warning will appear here.</p>
+        </div>
       </div>
 
       <div class="hero-panel">
@@ -91,7 +96,9 @@
 
         <div class="chart-box">
           <p class="chart-label">Hourly UV trend</p>
-          <canvas id="uvChart" width="800" height="220"></canvas>
+          <div class="chart-container">
+            <canvas id="uvChart"></canvas>
+          </div>
         </div>
       </div>
     </section>
@@ -102,6 +109,7 @@
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     crossorigin=""
   ></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/uv-dashboard.js"></script>
 </body>
 </html>

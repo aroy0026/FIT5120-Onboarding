@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSafety - Sign Up</title>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <main class="container auth-page">
+    <section class="auth-card">
+      <div class="auth-header">
+        <p class="eyebrow">CREATE ACCOUNT</p>
+        <h1 class="auth-title">Sign up to SunSafety</h1>
+        <p class="auth-subtitle">
+          Create your account to save reminders and personalised sun-protection preferences.
+        </p>
+      </div>
+
+      <form id="signupForm" class="auth-form">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+
+        <button type="submit" class="primary-btn auth-btn">Sign Up</button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+
+      <p class="auth-footer">
+        Already have an account?
+        <a href="login.html">Log in</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
