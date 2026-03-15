@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://fit5120-onboarding-fynt.onrender.com";
 
 const DEFAULT_STATE_CODE = "VIC";
 const DEFAULT_CITY_NAME = "Melbourne";
