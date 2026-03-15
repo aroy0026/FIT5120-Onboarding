@@ -19,8 +19,13 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
+}
+
+/* third card spans full width on larger screens */
+.grid > .card:nth-child(3) {
+  grid-column: 1 / -1;
 }
 
 .card {
@@ -114,9 +119,7 @@ input, select {
   outline: 3px solid #2563ff;
 }
 
-
 /* Fitzpatrick colors */
-
 .type-1 { background:#f6d7b0; color:#222; }
 .type-2 { background:#e8b98e; color:#222; }
 .type-3 { background:#d29a73; }
@@ -124,25 +127,70 @@ input, select {
 .type-5 { background:#8f4f2a; }
 .type-6 { background:#4c2119; }
 
+/* Clothing cards */
+
+.clothing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wear-card {
+  background: #f7f8fc;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.wear-card-icon {
+  font-size: 20px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.wear-card-content {
+  flex: 1;
+}
+
+.wear-card h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wear-text {
+  margin: 0;
+  font-size: 13px;
+  color: #475569;
+}
+
+/* optional: slightly stronger badge for high UV */
+.clothing-uv-badge {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
 /* Responsive */
-
 @media (max-width:900px){
+  .grid {
+    grid-template-columns:1fr;
+  }
 
-.grid {
-  grid-template-columns:1fr;
+  .skin-type-picker{
+    grid-template-columns: repeat(3,1fr);
+  }
 }
 
-.skin-type-picker{
-  grid-template-columns: repeat(3,1fr);
-}
-
+@media (max-width:700px) {
+  .clothing-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width:500px){
-
-.skin-type-picker{
-  grid-template-columns: repeat(2,1fr);
-}
-
+  .skin-type-picker{
+    grid-template-columns: repeat(2,1fr);
+  }
 }

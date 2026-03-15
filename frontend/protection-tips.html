@@ -11,178 +11,213 @@
 
 <body>
 
-<nav class="site-navbar">
+  <nav class="site-navbar">
+    <a href="index.html" class="site-navbar-left">
+      <div class="site-navbar-logo">UV</div>
+      <div class="site-navbar-title">SunSafety</div>
+    </a>
 
-  <a href="index.html" class="site-navbar-left">
-    <div class="site-navbar-logo">UV</div>
-    <div class="site-navbar-title">SunSafety</div>
-  </a>
+    <div class="site-navbar-links">
+      <a href="index.html">Home</a>
+      <a href="uv-dashboard.html">UV Dashboard</a>
+      <a href="awareness.html">Awareness</a>
+      <a href="protection-tips.html" class="active">Protection Tips</a>
+    </div>
+  </nav>
 
-  <div class="site-navbar-links">
-    <a href="index.html">Home</a>
-    <a href="uv-dashboard.html">UV Dashboard</a>
-    <a href="awareness.html">Awareness</a>
-    <a href="protection-tips.html" class="active">Protection Tips</a>
+  <main class="container">
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">SUN PROTECTION GUIDE</div>
+
+        <h1 class="hero-title">
+          Protect <span>your skin</span><br>
+          before you go outside
+        </h1>
+
+        <p class="hero-description">
+          Learn how much sunscreen to use, select your skin type,
+          and follow simple protection tips for strong UV conditions.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid">
+
+      <!-- Sunscreen Calculator -->
+      <div class="card">
+        <h3>Sunscreen Protection Calculator</h3>
+
+        <div id="currentUvDosage" class="uv-badge">
+          Current UV: Not available
+        </div>
+
+        <label>UV Level</label>
+        <input id="uvInput" type="number" placeholder="Example: 8">
+
+        <label>Select your Skin Type</label>
+
+        <div class="skin-type-picker">
+          <button class="skin-tile type-1" onclick="selectSkinType(1)">
+            <span>Type 1</span>
+          </button>
+          <button class="skin-tile type-2" onclick="selectSkinType(2)">
+            <span>Type 2</span>
+          </button>
+          <button class="skin-tile type-3" onclick="selectSkinType(3)">
+            <span>Type 3</span>
+          </button>
+          <button class="skin-tile type-4" onclick="selectSkinType(4)">
+            <span>Type 4</span>
+          </button>
+          <button class="skin-tile type-5" onclick="selectSkinType(5)">
+            <span>Type 5</span>
+          </button>
+          <button class="skin-tile type-6" onclick="selectSkinType(6)">
+            <span>Type 6</span>
+          </button>
+        </div>
+
+        <input type="hidden" id="skinType" value="">
+
+        <label>Choose body area</label>
+        <select id="bodyArea">
+          <option value="face">Face only</option>
+          <option value="arms">Face and arms</option>
+          <option value="full">Full exposed body</option>
+        </select>
+
+        <div class="button-row">
+          <button class="primary-btn" onclick="calculateDosage()">
+            Calculate Protection
+          </button>
+          <button class="secondary-btn" onclick="useCurrentUV()">
+            Use Current UV
+          </button>
+        </div>
+
+        <div id="dosageResult" class="result-box">
+          Your sunscreen recommendation will appear here.
+        </div>
+      </div>
+
+      <!-- Reminder system -->
+      <div class="card">
+        <h3>Reminder System</h3>
+
+        <div id="currentUvReminder" class="uv-badge">
+          Current UV: Not available
+        </div>
+
+        <div class="button-row">
+          <button class="primary-btn" onclick="openReminderModal()">Set Reminder</button>
+          <button class="secondary-btn" onclick="suggestReminderInterval()">Suggest Interval</button>
+        </div>
+
+        <div id="reminderSuggestion" class="result-box">
+          UV-based reminder suggestion will appear here.
+        </div>
+
+        <div id="reminderResult" class="result-box">
+          No reminder has been set yet.
+        </div>
+
+        <h3 style="margin-top:20px;">Reminder List</h3>
+
+        <div id="reminderList" class="result-box">
+          No reminders saved yet.
+        </div>
+      </div>
+
+      <!-- Clothing suggestions based on UV -->
+      <div class="card">
+        <h3>Clothing suggestions for this UV</h3>
+
+        <p class="hero-description" style="font-size:14px;margin-bottom:12px;">
+          Based on the current UV from the dashboard, see what to wear outdoors.
+        </p>
+
+        <div id="clothingUvLabel" class="uv-badge clothing-uv-badge">
+          UV level: not available
+        </div>
+
+        <div class="clothing-grid">
+          <div class="wear-card" id="wearTopCard">
+            <div class="wear-card-icon">👕</div>
+            <div class="wear-card-content">
+              <h4>Top</h4>
+              <p class="wear-text" id="wearTopText">
+                Clothing advice will appear here.
+              </p>
+            </div>
+          </div>
+
+          <div class="wear-card" id="wearBottomCard">
+            <div class="wear-card-icon">👖</div>
+            <div class="wear-card-content">
+              <h4>Bottom</h4>
+              <p class="wear-text" id="wearBottomText">
+                Clothing advice will appear here.
+              </p>
+            </div>
+          </div>
+
+          <div class="wear-card" id="wearHatCard">
+            <div class="wear-card-icon">👒</div>
+            <div class="wear-card-content">
+              <h4>Hat</h4>
+              <p class="wear-text" id="wearHatText">
+                Clothing advice will appear here.
+              </p>
+            </div>
+          </div>
+
+          <div class="wear-card" id="wearSunglassesCard">
+            <div class="wear-card-icon">🕶️</div>
+            <div class="wear-card-content">
+              <h4>Sunglasses</h4>
+              <p class="wear-text" id="wearSunglassesText">
+                Clothing advice will appear here.
+              </p>
+            </div>
+          </div>
+
+          <div class="wear-card" id="wearExtraCard">
+            <div class="wear-card-icon">☀️</div>
+            <div class="wear-card-content">
+              <h4>Extra care</h4>
+              <p class="wear-text" id="wearExtraText">
+                Extra advice will appear here.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Reminder modal -->
+  <div id="reminderModal" class="modal">
+    <div class="modal-box">
+      <h3>Set Reminder</h3>
+
+      <label>Email address</label>
+      <input id="reminderEmail" type="email">
+
+      <label>Reminder time</label>
+      <input id="reminderTime" type="datetime-local">
+
+      <div class="modal-buttons">
+        <button onclick="closeReminderModal()">Cancel</button>
+        <button onclick="saveReminder()">Save</button>
+      </div>
+    </div>
   </div>
 
-</nav>
-
-<main class="container">
-
-<section class="hero">
-
-<div>
-
-<div class="eyebrow">SUN PROTECTION GUIDE</div>
-
-<h1 class="hero-title">
-Protect <span>your skin</span><br>
-before you go outside
-</h1>
-
-<p class="hero-description">
-Learn how much sunscreen to use, select your skin type,
-and follow simple protection tips for strong UV conditions.
-</p>
-
-</div>
-
-</section>
-
-<section class="grid">
-
-<!-- Sunscreen Calculator -->
-
-<div class="card">
-
-<h3>Sunscreen Protection Calculator</h3>
-
-<div id="currentUvDosage" class="uv-badge">
-Current UV: Not available
-</div>
-
-<label>UV Level</label>
-<input id="uvInput" type="number" placeholder="Example: 8">
-
-<label>Select your Skin Type</label>
-
-<div class="skin-type-picker">
-
-<button class="skin-tile type-1" onclick="selectSkinType(1)">
-<span>Type 1</span>
-</button>
-
-<button class="skin-tile type-2" onclick="selectSkinType(2)">
-<span>Type 2</span>
-</button>
-
-<button class="skin-tile type-3" onclick="selectSkinType(3)">
-<span>Type 3</span>
-</button>
-
-<button class="skin-tile type-4" onclick="selectSkinType(4)">
-<span>Type 4</span>
-</button>
-
-<button class="skin-tile type-5" onclick="selectSkinType(5)">
-<span>Type 5</span>
-</button>
-
-<button class="skin-tile type-6" onclick="selectSkinType(6)">
-<span>Type 6</span>
-</button>
-
-</div>
-
-<input type="hidden" id="skinType" value="">
-
-<label>Choose body area</label>
-
-<select id="bodyArea">
-<option value="face">Face only</option>
-<option value="arms">Face and arms</option>
-<option value="full">Full exposed body</option>
-</select>
-
-<div class="button-row">
-
-<button class="primary-btn" onclick="calculateDosage()">
-Calculate Protection
-</button>
-
-<button class="secondary-btn" onclick="useCurrentUV()">
-Use Current UV
-</button>
-
-</div>
-
-<div id="dosageResult" class="result-box">
-Your sunscreen recommendation will appear here.
-</div>
-
-</div>
-
-
-<!-- Reminder system -->
-
-<div class="card">
-
-<h3>Reminder System</h3>
-
-<div id="currentUvReminder" class="uv-badge">
-Current UV: Not available
-</div>
-
-<div class="button-row">
-<button class="primary-btn" onclick="openReminderModal()">Set Reminder</button>
-<button class="secondary-btn" onclick="suggestReminderInterval()">Suggest Interval</button>
-</div>
-
-<div id="reminderSuggestion" class="result-box">
-UV-based reminder suggestion will appear here.
-</div>
-
-<div id="reminderResult" class="result-box">
-No reminder has been set yet.
-</div>
-
-<h3 style="margin-top:20px;">Reminder List</h3>
-
-<div id="reminderList" class="result-box">
-No reminders saved yet.
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<!-- Reminder modal -->
-
-<div id="reminderModal" class="modal">
-
-<div class="modal-box">
-
-<h3>Set Reminder</h3>
-
-<label>Email address</label>
-<input id="reminderEmail" type="email">
-
-<label>Reminder time</label>
-<input id="reminderTime" type="datetime-local">
-
-<div class="modal-buttons">
-<button onclick="closeReminderModal()">Cancel</button>
-<button onclick="saveReminder()">Save</button>
-</div>
-
-</div>
-
-</div>
-
-<script src="js/protection-tips.js"></script>
+  <script src="js/protection-tips.js"></script>
 
 </body>
 </html>
