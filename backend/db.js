@@ -1,8 +1,9 @@
 // db.js
 const { Pool } = require("pg");
+require("dotenv").config();
 
 const pool = new Pool({
-  connectionString: 'postgresql://sun_safety_user:rtyoDu5HGsIn4zOZ1OyMJvgqzlnXJshM@dpg-d6nt8cfgi27c73abff40-a.oregon-postgres.render.com/sun_safety', // e.g. postgresql://user:pass@host:5432/dbname
+  connectionString: process.env.DATABASE_URL, // e.g. postgresql://user:pass@host:5432/dbname
   ssl: { rejectUnauthorized: false }, // enable if your provider requires SSL
 });
 
