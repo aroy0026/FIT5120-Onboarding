@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +12,19 @@
 
 <body>
 
- <nav class="site-navbar">
+  <nav class="site-navbar">
+    <a href="index.html" class="site-navbar-left">
+      <div class="site-navbar-logo">UV</div>
+      <div class="site-navbar-title">SunSafety</div>
+    </a>
 
-  <a href="index.html" class="site-navbar-left">
-    <div class="site-navbar-logo">UV</div>
-    <div class="site-navbar-title">SunSafety</div>
-  </a>
-
-  <div class="site-navbar-links">
-    <a href="index.html">Home</a>
-    <a href="uv-dashboard.html">UV Dashboard</a>
-    <a href="awareness.html">Awareness</a>
-    <a href="protection-tips.html">Protection Tips</a>
-  </div>
-
-</nav>
+    <div class="site-navbar-links">
+      <a href="index.html">Home</a>
+      <a href="uv-dashboard.html">UV Dashboard</a>
+      <a href="awareness.html" class="active">Awareness</a>
+      <a href="protection-tips.html">Protection Tips</a>
+    </div>
+  </nav>
 
   <main class="container">
 
@@ -41,6 +40,22 @@
         <div id="melanomaLoader" class="loader">Loading melanoma data…</div>
         <div class="chart-container">
           <canvas id="melanomaChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Long-term UV pattern</div>
+      <h2 class="card-title">Yearly peak UV in Melbourne</h2>
+      <p class="stat-caption">
+        Highest and lowest daily UV Index recorded each year (2016–2025) in Melbourne.
+      </p>
+
+      <div class="chart-box">
+        <p class="chart-label">Annual max and min daily UV index</p>
+        <div id="yearlyUvLoader" class="loader">Loading yearly UV…</div>
+        <div class="chart-container">
+          <canvas id="yearlyUvChart"></canvas>
         </div>
       </div>
     </div>
@@ -86,6 +101,7 @@
       </div>
     </div>
 
+    <!-- Card: Educational resources -->
     <div class="card">
       <div class="card-eyebrow">Learn more</div>
       <h2 class="card-title">UV & Sun safety resources</h2>

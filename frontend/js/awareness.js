@@ -115,6 +115,83 @@ async function loadMelanomaChart() {
   }
 }
 
+// ---------- NEW: Yearly UV summary ----------
+async function loadYearlyUvSummary() {
+  const loader = document.getElementById("yearlyUvLoader");
+  const ctx = document.getElementById("yearlyUvChart").getContext("2d");
+
+  loader.classList.remove("hidden");
+  loader.textContent = "Loading yearly UV…";
+
+  try {
+    const res = await fetch(
+      `${API_BASE}/uv-yearly-summary?state_code=VIC&city_name=Melbourne`
+    );
+    const data = await res.json();
+    const items = data.items || [];
+
+    if (!items.length) {
+      loader.textContent = "No yearly UV data available.";
+      return;
+    }
+
+    const years = items.map(r => r.year);
+    const maxUv = items.map(r => r.max_uv);
+    const minUv = items.map(r => r.min_uv);
+
+    if (window.yearlyUvChart && typeof window.yearlyUvChart.destroy === "function") {
+      window.yearlyUvChart.destroy();
+    }
+
+    window.yearlyUvChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: "Max daily UV index (per year)",
+            data: maxUv,
+            borderColor: "#16a34a",
+            backgroundColor: "rgba(22, 163, 74, 0.1)",
+            tension: 0.2
+          },
+          {
+            label: "Min daily UV index (per year)",
+            data: minUv,
+            borderColor: "#9ca3af",
+            backgroundColor: "rgba(156, 163, 175, 0.1)",
+            tension: 0.2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        plugins: {
+          legend: { position: "bottom" }
+        },
+        scales: {
+          x: { title: { display: true, text: "Year" } },
+          y: {
+            title: { display: true, text: "UV index" },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    loader.classList.add("hidden");
+  } catch (err) {
+    console.error("Failed to load yearly UV summary", err);
+    loader.textContent = "Error loading yearly UV.";
+  }
+}
+
+// ---------- Locations & UV history ----------
 async function loadLocations() {
   const stateSelect = document.getElementById("stateSelect");
   const citySelect = document.getElementById("citySelect");
@@ -362,6 +439,7 @@ function drawUvChart(items, stateCode, cityName, year) {
   });
 }
 
+// ---------- Educational resources ----------
 async function loadEducationalResources() {
   const loader = document.getElementById("resourceLoader");
   const stripWrapper = document.querySelector(".resource-strip-wrapper");
@@ -501,8 +579,10 @@ async function loadEducationalResources() {
   }
 }
 
+// ---------- Init ----------
 document.addEventListener("DOMContentLoaded", async () => {
   loadMelanomaChart();
+  loadYearlyUvSummary();        // new yearly UV chart
   await loadLocations();
   const yearSelect = document.getElementById("uvYearSelect");
   yearSelect.disabled = false;

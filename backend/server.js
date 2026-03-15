@@ -11,6 +11,56 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+// Add near your other routes in server.js
+
+// GET /uv-yearly-summary?state_code=VIC&city_name=Melbourne
+app.get("/uv-yearly-summary", async (req, res) => {
+  try {
+    const stateCode = req.query.state_code || "VIC";
+    const cityName = req.query.city_name || "Melbourne";
+
+    // Resolve city_id
+    const citySql = `
+      SELECT c.city_id, c.city_name, s.state_code, s.state_name
+      FROM dim_city c
+      JOIN dim_state s ON c.state_id = s.state_id
+      WHERE s.state_code = $1 AND c.city_name = $2
+      LIMIT 1;
+    `;
+    const cityResult = await pool.query(citySql, [stateCode, cityName]);
+
+    if (cityResult.rowCount === 0) {
+      return res.json({ count: 0, items: [] });
+    }
+
+    const { city_id, state_name } = cityResult.rows[0];
+
+    const summarySql = `
+      SELECT year, max_uv, min_uv
+      FROM uv_yearly_summary
+      WHERE city_id = $1
+      ORDER BY year;
+    `;
+    const summaryResult = await pool.query(summarySql, [city_id]);
+
+    res.json({
+      state_code: stateCode,
+      state_name,
+      city_name: cityName,
+      count: summaryResult.rowCount,
+      items: summaryResult.rows.map(r => ({
+        year: Number(r.year),
+        max_uv: Number(r.max_uv),
+        min_uv: Number(r.min_uv)
+      }))
+    });
+  } catch (err) {
+    console.error("Error fetching yearly UV summary:", err.message);
+    res.status(500).json({ error: "Failed to fetch yearly UV summary" });
+  }
+});
+
+
 app.get("/locations", async (req, res) => {
   try {
     const sql = `
