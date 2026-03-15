@@ -1,886 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SunSafety - UV Awareness</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunSafety - UV Awareness</title>
 
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/uv-dashboard.css">
-
-    <style>
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 24px;
-            background: #0b3c5d;
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-        }
-
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-logo {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: #ffcc33;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: #0b3c5d;
-            font-size: 18px;
-        }
-
-        .navbar-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 20px;
-            font-size: 14px;
-        }
-
-        .nav-link {
-            color: #e6f0ff;
-            text-decoration: none;
-            padding-bottom: 3px;
-            border-bottom: 2px solid transparent;
-            transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .nav-link:hover {
-            color: #ffffff;
-            border-bottom-color: #ffcc33;
-        }
-
-        .nav-link.active {
-            color: #ffffff;
-            border-bottom-color: #ffcc33;
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1120px;
-            margin: 24px auto;
-            padding: 0 16px 40px;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 20px 22px;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
-            margin-bottom: 24px;
-        }
-
-        .card-eyebrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #64748b;
-            margin-bottom: 4px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .stat-caption {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 12px;
-        }
-
-        .chart-box {
-            margin-top: 8px;
-        }
-
-        .chart-label {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 260px;
-        }
-
-        .controls-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .controls-row label {
-            font-size: 13px;
-            color: #475569;
-        }
-
-        .controls-row select {
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            font-size: 13px;
-        }
-
-        .loader {
-            font-size: 13px;
-            color: #64748b;
-            text-align: center;
-            padding: 12px 0;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Educational resources strip */
-
-        .resource-strip-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .resource-strip {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 4px 2px;
-            scroll-behavior: smooth;
-        }
-
-        .resource-card {
-            flex: 0 0 260px;
-            border-radius: 12px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 10px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .resource-header {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .resource-thumb {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #0f172a;
-            overflow: hidden;
-        }
-
-        .resource-title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .resource-category {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #64748b;
-        }
-
-        .resource-description {
-            font-size: 12px;
-            color: #475569;
-            flex: 1;
-        }
-
-        .resource-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-
-        .resource-source {
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .carousel-btn {
-            border: none;
-            background: #e2e8f0;
-            color: #0f172a;
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-btn:hover {
-            background: #cbd5f5;
-        }
-
-        .primary-btn {
-            padding: 8px 14px;
-            border-radius: 999px;
-            border: none;
-            background: #0b3c5d;
-            color: #ffffff;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .primary-btn:hover {
-            background: #0f4773;
-        }
-    </style>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/awareness.css">
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="navbar-left">
-            <div class="navbar-logo">UV</div>
-            <div class="navbar-title">SunSafety</div>
+ <nav class="site-navbar">
+
+  <a href="index.html" class="site-navbar-left">
+    <div class="site-navbar-logo">UV</div>
+    <div class="site-navbar-title">SunSafety</div>
+  </a>
+
+  <div class="site-navbar-links">
+    <a href="index.html">Home</a>
+    <a href="uv-dashboard.html">UV Dashboard</a>
+    <a href="awareness.html">Awareness</a>
+    <a href="protection-tips.html">Protection Tips</a>
+  </div>
+
+</nav>
+
+  <main class="container">
+
+    <div class="card">
+      <div class="card-eyebrow">Data spotlight</div>
+      <h2 class="card-title">Melanoma incidence vs mortality</h2>
+      <p class="stat-caption">
+        Australia, Persons – incidence and mortality rates (per 100,000) over time from cancer stats table.
+      </p>
+
+      <div class="chart-box">
+        <p class="chart-label">Incidence vs mortality over time</p>
+        <div id="melanomaLoader" class="loader">Loading melanoma data…</div>
+        <div class="chart-container">
+          <canvas id="melanomaChart"></canvas>
         </div>
-        <nav class="navbar-nav">
-            <a href="uv-dashboard.html" class="nav-link">UV Dashboard</a>
-            <a href="awareness.html" class="nav-link active">Awareness</a>
-            <a href="protection-tips.html" class="nav-link">Protection Tips</a>
-        </nav>
-    </header>
+      </div>
+    </div>
 
-    <main class="container">
+    <div class="card">
+      <div class="card-eyebrow">UV exposure context</div>
+      <h2 class="card-title">Daily peak UV by location</h2>
+      <p class="stat-caption">
+        Select a state, city and year to see daily maximum UV index, with months on the X axis.
+      </p>
 
-        <!-- CARD 1: MELANOMA STATS -->
-        <div class="card">
-            <div class="card-eyebrow">Data spotlight</div>
-            <h2 class="card-title">Melanoma incidence vs mortality</h2>
-            <p class="stat-caption">
-                Australia, Persons – incidence and mortality rates (per 100,000) over time from cancer stats table.
-            </p>
+      <div class="controls-row">
+        <label>
+          State:
+          <select id="stateSelect">
+            <option value="">Loading…</option>
+          </select>
+        </label>
 
-            <div class="chart-box">
-                <p class="chart-label">Incidence vs mortality over time</p>
-                <div id="melanomaLoader" class="loader">Loading melanoma data…</div>
-                <div class="chart-container">
-                    <canvas id="melanomaChart"></canvas>
-                </div>
-            </div>
+        <label>
+          City:
+          <select id="citySelect" disabled>
+            <option value="">Select a state first</option>
+          </select>
+        </label>
+
+        <label>
+          Year:
+          <select id="uvYearSelect" disabled>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="chart-box">
+        <p class="chart-label">Daily peak UV index</p>
+        <div id="uvLoader" class="loader">Loading UV data…</div>
+        <div class="chart-container">
+          <canvas id="uvHistoryChart"></canvas>
         </div>
+      </div>
+    </div>
 
-        <!-- CARD 2: UV HISTORY (DAILY POINTS, MONTH LABELS) -->
-        <div class="card">
-            <div class="card-eyebrow">UV exposure context</div>
-            <h2 class="card-title">Daily peak UV by location</h2>
-            <p class="stat-caption">
-                Select a state, city and year to see daily maximum UV index, with months on the X axis.
-            </p>
+    <div class="card">
+      <div class="card-eyebrow">Learn more</div>
+      <h2 class="card-title">UV & Sun safety resources</h2>
+      <p class="stat-caption">
+        Browse trusted resources to learn more about UV, the UV Index, and sun protection.
+      </p>
 
-            <div class="controls-row">
-                <label>
-                    State:
-                    <select id="stateSelect">
-                        <option value="">Loading…</option>
-                    </select>
-                </label>
+      <div id="resourceLoader" class="loader">Loading resources…</div>
 
-                <label>
-                    City:
-                    <select id="citySelect" disabled>
-                        <option value="">Select a state first</option>
-                    </select>
-                </label>
+      <div class="resource-strip-wrapper hidden">
+        <button id="resourceScrollLeft" class="carousel-btn" type="button">&#9664;</button>
 
-                <label>
-                    Year:
-                    <select id="uvYearSelect" disabled>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                    </select>
-                </label>
-            </div>
+        <div id="resourceStrip" class="resource-strip"></div>
 
-            <div class="chart-box">
-                <p class="chart-label">Daily peak UV index</p>
-                <div id="uvLoader" class="loader">Loading UV data…</div>
-                <div class="chart-container">
-                    <canvas id="uvHistoryChart"></canvas>
-                </div>
-            </div>
-        </div>
+        <button id="resourceScrollRight" class="carousel-btn" type="button">&#9654;</button>
+      </div>
+    </div>
 
-        <!-- CARD 3: EDUCATIONAL RESOURCES STRIP -->
-        <div class="card">
-            <div class="card-eyebrow">Learn more</div>
-            <h2 class="card-title">UV & Sun safety resources</h2>
-            <p class="stat-caption">
-                Browse trusted resources to learn more about UV, the UV Index, and sun protection.
-            </p>
+  </main>
 
-            <div id="resourceLoader" class="loader">Loading resources…</div>
-
-            <div class="resource-strip-wrapper hidden">
-                <button id="resourceScrollLeft" class="carousel-btn" type="button">&#9664;</button>
-
-                <div id="resourceStrip" class="resource-strip"></div>
-
-                <button id="resourceScrollRight" class="carousel-btn" type="button">&#9654;</button>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const API_BASE = "http://localhost:3000";
-
-        const DEFAULT_STATE_CODE = "VIC";
-        const DEFAULT_CITY_NAME = "Melbourne";
-        const DEFAULT_YEAR = "2023";
-
-        // ---------- MELANOMA CHART ----------
-        async function loadMelanomaChart() {
-            const loader = document.getElementById("melanomaLoader");
-            loader.classList.remove("hidden");
-            loader.textContent = "Loading melanoma data…";
-
-            try {
-                const res = await fetch(`${API_BASE}/cancer-stats`);
-                const data = await res.json();
-
-                const rawItems = (data && data.items) ? data.items : [];
-
-                const items = rawItems
-                    .filter(row => row.sex === "Persons")
-                    .map(row => {
-                        const incidence = parseFloat(row.incidence_rate);
-                        const mortality = parseFloat(row.mortality_rate);
-                        return {
-                            year: row.year,
-                            incidence,
-                            mortality
-                        };
-                    })
-                    .filter(row =>
-                        Number.isFinite(row.incidence) &&
-                        Number.isFinite(row.mortality)
-                    );
-
-                if (!items.length) {
-                    loader.textContent = "No melanoma data available.";
-                    return;
-                }
-
-                const byYear = new Map();
-                for (const row of items) {
-                    if (!byYear.has(row.year)) {
-                        byYear.set(row.year, { sumInc: 0, sumMort: 0, n: 0 });
-                    }
-                    const y = byYear.get(row.year);
-                    y.sumInc += row.incidence;
-                    y.sumMort += row.mortality;
-                    y.n += 1;
-                }
-
-                const years = Array.from(byYear.keys()).sort((a, b) => a - b);
-                const incidence = years.map(year => {
-                    const y = byYear.get(year);
-                    return y.sumInc / y.n;
-                });
-                const mortality = years.map(year => {
-                    const y = byYear.get(year);
-                    return y.sumMort / y.n;
-                });
-
-                const ctx = document.getElementById("melanomaChart").getContext("2d");
-
-                if (window.melanomaChart && typeof window.melanomaChart.destroy === "function") {
-                    window.melanomaChart.destroy();
-                }
-
-                window.melanomaChart = new Chart(ctx, {
-                    type: "line",
-                    data: {
-                        labels: years,
-                        datasets: [
-                            {
-                                label: "Incidence rate (per 100,000)",
-                                data: incidence,
-                                borderColor: "#0b3c5d",
-                                backgroundColor: "rgba(11, 60, 93, 0.1)",
-                                tension: 0.2
-                            },
-                            {
-                                label: "Mortality rate (per 100,000)",
-                                data: mortality,
-                                borderColor: "#dc2626",
-                                backgroundColor: "rgba(220, 38, 38, 0.1)",
-                                tension: 0.2
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            mode: "index",
-                            intersect: false
-                        },
-                        plugins: {
-                            legend: { position: "bottom" }
-                        },
-                        scales: {
-                            x: { title: { display: true, text: "Year" } },
-                            y: {
-                                title: { display: true, text: "Rate per 100,000" },
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-
-                loader.classList.add("hidden");
-            } catch (err) {
-                console.error("Failed to load melanoma chart", err);
-                loader.textContent = "Error loading melanoma data.";
-            }
-        }
-
-        // ---------- UV HISTORY (DAILY POINTS, MONTH LABELS) ----------
-
-        let locationsCache = null;
-        let lastUvItems = [];
-
-        async function loadLocations() {
-            const stateSelect = document.getElementById("stateSelect");
-            const citySelect = document.getElementById("citySelect");
-            const yearSelect = document.getElementById("uvYearSelect");
-
-            try {
-                const res = await fetch(`${API_BASE}/locations`);
-                const data = await res.json();
-                const states = data.states || [];
-                locationsCache = states;
-
-                stateSelect.innerHTML = "";
-                stateSelect.disabled = false;
-
-                stateSelect.insertAdjacentHTML(
-                    "beforeend",
-                    `<option value="">Select state</option>`
-                );
-
-                states.forEach((s) => {
-                    stateSelect.insertAdjacentHTML(
-                        "beforeend",
-                        `<option value="${s.state_code}">${s.state_code} - ${s.state_name || ""}</option>`
-                    );
-                });
-
-                if (DEFAULT_STATE_CODE) {
-                    stateSelect.value = DEFAULT_STATE_CODE;
-                    populateCitiesForState(DEFAULT_STATE_CODE);
-                }
-
-                stateSelect.addEventListener("change", () => {
-                    const code = stateSelect.value;
-                    populateCitiesForState(code);
-                });
-
-                citySelect.addEventListener("change", () => {
-                    triggerUvReload();
-                });
-
-                yearSelect.addEventListener("change", () => {
-                    triggerUvReload();
-                });
-
-            } catch (err) {
-                console.error("Failed to load locations", err);
-                stateSelect.innerHTML = `<option value="">Error loading states</option>`;
-                citySelect.innerHTML = `<option value="">Error</option>`;
-                citySelect.disabled = true;
-            }
-        }
-
-        function populateCitiesForState(stateCode) {
-            const citySelect = document.getElementById("citySelect");
-            const yearSelect = document.getElementById("uvYearSelect");
-            citySelect.innerHTML = "";
-
-            if (!locationsCache || !stateCode) {
-                citySelect.disabled = true;
-                citySelect.insertAdjacentHTML(
-                    "beforeend",
-                    `<option value="">Select a state first</option>`
-                );
-                yearSelect.disabled = true;
-                return;
-            }
-
-            const state = locationsCache.find(s => s.state_code === stateCode);
-
-            if (!state || !state.cities || !state.cities.length) {
-                citySelect.disabled = true;
-                citySelect.insertAdjacentHTML(
-                    "beforeend",
-                    `<option value="">No cities available</option>`
-                );
-                yearSelect.disabled = true;
-                return;
-            }
-
-            citySelect.disabled = false;
-            citySelect.insertAdjacentHTML(
-                "beforeend",
-                `<option value="">Select city</option>`
-            );
-
-            state.cities.forEach((c) => {
-                citySelect.insertAdjacentHTML(
-                    "beforeend",
-                    `<option value="${c.city_name}">${c.city_name}</option>`
-                );
-            });
-
-            if (stateCode === DEFAULT_STATE_CODE) {
-                const cityExists = state.cities.some(c => c.city_name === DEFAULT_CITY_NAME);
-                if (cityExists) {
-                    citySelect.value = DEFAULT_CITY_NAME;
-                }
-            }
-
-            yearSelect.disabled = false;
-        }
-
-        function triggerUvReload() {
-            const stateSelect = document.getElementById("stateSelect");
-            const citySelect = document.getElementById("citySelect");
-            const yearSelect = document.getElementById("uvYearSelect");
-
-            const stateCode = stateSelect.value;
-            const cityName = citySelect.value;
-            const year = yearSelect.value || null;
-
-            if (stateCode && cityName) {
-                loadUvHistoryChart(stateCode, cityName, year);
-            }
-        }
-
-        async function loadUvHistoryChart(stateCode, cityName, year) {
-            const loader = document.getElementById("uvLoader");
-            loader.classList.remove("hidden");
-            loader.textContent = `Loading UV data for ${cityName}, ${stateCode}…`;
-
-            try {
-                const params = new URLSearchParams({
-                    state_code: stateCode,
-                    city_name: cityName,
-                    limit_days: 365
-                });
-
-                if (year) {
-                    params.append("year", year);
-                }
-
-                const res = await fetch(`${API_BASE}/uv-history?${params.toString()}`);
-                const data = await res.json();
-                lastUvItems = data.items || [];
-
-                drawUvChart(lastUvItems, stateCode, cityName, year);
-
-            } catch (err) {
-                console.error("Failed to load UV history chart", err);
-                loader.textContent = "Error loading UV data.";
-            }
-        }
-
-        function drawUvChart(items, stateCode, cityName, year) {
-            const loader = document.getElementById("uvLoader");
-            const ctx = document.getElementById("uvHistoryChart").getContext("2d");
-
-            if (!items.length) {
-                loader.textContent = "No UV data available for this selection.";
-                loader.classList.remove("hidden");
-
-                if (window.uvHistoryChart && typeof window.uvHistoryChart.destroy === "function") {
-                    window.uvHistoryChart.destroy();
-                }
-
-                window.uvHistoryChart = new Chart(ctx, {
-                    type: "line",
-                    data: { labels: [], datasets: [] },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
-                return;
-            }
-
-            loader.classList.add("hidden");
-
-            const xLabels = [];
-            const values = [];
-            const dates = [];
-
-            items.forEach(row => {
-                const d = new Date(row.day_utc);
-                if (Number.isNaN(d.getTime())) return;
-                xLabels.push(d.getUTCMonth()); // 0–11
-                values.push(parseFloat(row.max_uv_index));
-                dates.push(d);
-            });
-
-            if (window.uvHistoryChart && typeof window.uvHistoryChart.destroy === "function") {
-                window.uvHistoryChart.destroy();
-            }
-
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-            window.uvHistoryChart = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: xLabels,
-                    datasets: [
-                        {
-                            label: `Daily peak UV – ${cityName}, ${stateCode} (${year})`,
-                            data: values,
-                            borderColor: "#0284c7",
-                            backgroundColor: "rgba(2, 132, 199, 0.1)",
-                            tension: 0.2,
-                            pointRadius: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        mode: "index",
-                        intersect: false
-                    },
-                    plugins: {
-                        legend: { position: "bottom" },
-                        tooltip: {
-                            callbacks: {
-                                title: (ctx) => {
-                                    const idx = ctx[0].dataIndex;
-                                    const d = dates[idx];
-                                    return d.toLocaleDateString("en-AU", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric"
-                                    });
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: { display: true, text: "Month" },
-                            ticks: {
-                                callback: (value, index) => {
-                                    const monthIndex = xLabels[index];
-                                    return monthNames[monthIndex];
-                                },
-                                maxRotation: 0,
-                                minRotation: 0,
-                                autoSkip: true,
-                                maxTicksLimit: 12
-                            }
-                        },
-                        y: {
-                            title: { display: true, text: "Peak UV index" },
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-
-        // ---------- EDUCATIONAL RESOURCES STRIP ----------
-
-        async function loadEducationalResources() {
-            const loader = document.getElementById("resourceLoader");
-            const stripWrapper = document.querySelector(".resource-strip-wrapper");
-            const strip = document.getElementById("resourceStrip");
-            const scrollLeftBtn = document.getElementById("resourceScrollLeft");
-            const scrollRightBtn = document.getElementById("resourceScrollRight");
-
-            try {
-                loader.classList.remove("hidden");
-                loader.textContent = "Loading resources…";
-
-                const res = await fetch(`${API_BASE}/educational-resources`);
-                const data = await res.json();
-                const items = data.items || [];
-
-                if (!items.length) {
-                    loader.textContent = "No educational resources available.";
-                    return;
-                }
-
-                strip.innerHTML = "";
-
-                function getYoutubeThumb(url) {
-                    try {
-                        const u = new URL(url);
-                        const vParam = u.searchParams.get("v");
-                        const videoId = vParam || u.pathname.split("/").filter(Boolean).pop();
-                        if (!videoId) return null;
-                        return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                    } catch {
-                        return null;
-                    }
-                }
-
-                function getFallbackLabel(item) {
-                    if (item.source_type === "YouTube") return "YT";
-                    if (item.source_type === "GovSite") return "Gov";
-                    if (item.source_type === "NGO") return "NGO";
-                    try {
-                        const u = new URL(item.url);
-                        return u.hostname.replace("www.", "").split(".")[0].slice(0, 3).toUpperCase();
-                    } catch {
-                        return "UV";
-                    }
-                }
-
-                items.forEach((item) => {
-                    const card = document.createElement("div");
-                    card.className = "resource-card";
-
-                    const header = document.createElement("div");
-                    header.className = "resource-header";
-
-                    const thumbWrap = document.createElement("div");
-                    thumbWrap.className = "resource-thumb";
-
-                    let thumbUrl = null;
-                    if (item.source_type === "YouTube") {
-                        thumbUrl = getYoutubeThumb(item.url);
-                    }
-
-                    if (thumbUrl) {
-                        const img = document.createElement("img");
-                        img.alt = item.title;
-                        img.src = thumbUrl;
-                        img.style.width = "100%";
-                        img.style.height = "100%";
-                        img.style.objectFit = "cover";
-                        img.style.borderRadius = "8px";
-                        thumbWrap.appendChild(img);
-                    } else {
-                        thumbWrap.textContent = getFallbackLabel(item);
-                    }
-
-                    const titleWrap = document.createElement("div");
-                    const titleEl = document.createElement("div");
-                    titleEl.className = "resource-title";
-                    titleEl.textContent = item.title;
-
-                    const categoryEl = document.createElement("div");
-                    categoryEl.className = "resource-category";
-                    categoryEl.textContent = item.category;
-
-                    titleWrap.appendChild(titleEl);
-                    titleWrap.appendChild(categoryEl);
-
-                    header.appendChild(thumbWrap);
-                    header.appendChild(titleWrap);
-
-                    const descEl = document.createElement("p");
-                    descEl.className = "resource-description";
-                    descEl.textContent = item.description;
-
-                    const footer = document.createElement("div");
-                    footer.className = "resource-footer";
-
-                    const sourceEl = document.createElement("span");
-                    sourceEl.className = "resource-source";
-                    sourceEl.textContent = item.source_type;
-
-                    const openBtn = document.createElement("button");
-                    openBtn.type = "button";
-                    openBtn.className = "primary-btn";
-                    openBtn.textContent = "Open";
-                    openBtn.onclick = () => {
-                        window.open(item.url, "_blank", "noopener");
-                    };
-
-                    footer.appendChild(sourceEl);
-                    footer.appendChild(openBtn);
-
-                    card.appendChild(header);
-                    card.appendChild(descEl);
-                    card.appendChild(footer);
-
-                    strip.appendChild(card);
-                });
-
-                loader.classList.add("hidden");
-                stripWrapper.classList.remove("hidden");
-
-                function getCardWidth() {
-                    const firstCard = strip.querySelector(".resource-card");
-                    return firstCard ? firstCard.offsetWidth + 12 : 260;
-                }
-
-                scrollLeftBtn.onclick = () => {
-                    strip.scrollBy({ left: -getCardWidth(), behavior: "smooth" });
-                };
-
-                scrollRightBtn.onclick = () => {
-                    strip.scrollBy({ left: getCardWidth(), behavior: "smooth" });
-                };
-            } catch (err) {
-                console.error("Failed to load educational resources", err);
-                loader.textContent = "Error loading resources.";
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            loadMelanomaChart();
-            await loadLocations();
-            const yearSelect = document.getElementById("uvYearSelect");
-            yearSelect.disabled = false;
-            yearSelect.value = DEFAULT_YEAR;
-            triggerUvReload();
-            loadEducationalResources();
-        });
-    </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/awareness.js"></script>
 </body>
-
 </html>

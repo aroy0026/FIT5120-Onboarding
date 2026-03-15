@@ -1,37 +1,37 @@
-/* Reset */
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Base layout */
-
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #f5f5f5;
+  background: #f7f8fb;
   color: #132b5c;
 }
 
-/* Page container */
-
 .container {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 36px 24px 64px;
 }
-
-/* Buttons */
 
 .primary-btn {
   background: #2563ff;
-  color: white;
+  color: #ffffff;
   padding: 16px 24px;
   border-radius: 12px;
   font-weight: 600;
   text-decoration: none;
   display: inline-block;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-btn:hover {
+  background: #1f55da;
+  transform: translateY(-1px);
 }
 
 .secondary-btn {
@@ -42,12 +42,96 @@ body {
   font-weight: 600;
   text-decoration: none;
   display: inline-block;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-/* Button spacing */
+.secondary-btn:hover {
+  background: #d9dee7;
+  transform: translateY(-1px);
+}
 
 .hero-actions {
   display: flex;
   gap: 16px;
   margin-top: 24px;
+  flex-wrap: wrap;
+}
+.site-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: #0b3c5d;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  margin: 0 0 28px 0;
+  width: 100%;
+}
+
+.site-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-navbar-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #ffcc33;
+  color: #0b3c5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.site-navbar-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.site-navbar-links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.site-navbar-links a {
+  color: #e6f0ff;
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-navbar-links a:hover {
+  color: #ffffff;
+  border-bottom-color: #ffcc33;
+}
+
+.site-navbar-links a.active {
+  color: #ffffff;
+  border-bottom-color: #ffcc33;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .site-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .site-navbar-links {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
 }

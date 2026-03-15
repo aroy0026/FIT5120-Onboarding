@@ -82,3 +82,67 @@ input, select {
   display: flex;
   justify-content: space-between;
 }
+
+.skin-type-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.skin-tile {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 6px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  color: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.skin-tile span {
+  font-size: 12px;
+}
+
+.skin-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.skin-tile.selected {
+  outline: 3px solid #2563ff;
+}
+
+
+/* Fitzpatrick colors */
+
+.type-1 { background:#f6d7b0; color:#222; }
+.type-2 { background:#e8b98e; color:#222; }
+.type-3 { background:#d29a73; }
+.type-4 { background:#b7774e; }
+.type-5 { background:#8f4f2a; }
+.type-6 { background:#4c2119; }
+
+
+/* Responsive */
+
+@media (max-width:900px){
+
+.grid {
+  grid-template-columns:1fr;
+}
+
+.skin-type-picker{
+  grid-template-columns: repeat(3,1fr);
+}
+
+}
+
+@media (max-width:500px){
+
+.skin-type-picker{
+  grid-template-columns: repeat(2,1fr);
+}
+
+}
