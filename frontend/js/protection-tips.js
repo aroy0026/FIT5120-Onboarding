@@ -1,47 +1,147 @@
+
 function getCurrentUV() {
   const uv = localStorage.getItem("currentUV");
-  if (uv) return Number(uv);
+
+  if (uv !== null && uv !== "") {
+    return Number(uv);
+  }
+
   return null;
 }
 
 function updateCurrentUVDisplay() {
+
   const uv = getCurrentUV();
-  const text = uv ? `Current UV: ${uv}` : "Current UV: Not available";
+  const text = uv !== null ? `Current UV: ${uv}` : "Current UV: Not available";
 
   document.getElementById("currentUvDosage").textContent = text;
   document.getElementById("currentUvReminder").textContent = text;
+
+  if (uv !== null) {
+    document.getElementById("uvInput").value = uv;
+  }
+
 }
 
 function useCurrentUV() {
+
   const uv = getCurrentUV();
+
   if (uv === null) {
-    alert("No UV data found. Visit dashboard first.");
+    alert("No UV data found. Visit the UV Dashboard first.");
     return;
   }
 
   document.getElementById("uvInput").value = uv;
+
+}
+
+
+function selectSkinType(type) {
+
+  document.getElementById("skinType").value = type;
+
+  const tiles = document.querySelectorAll(".skin-tile");
+
+  tiles.forEach(tile => tile.classList.remove("selected"));
+
+  if (tiles[type - 1]) {
+    tiles[type - 1].classList.add("selected");
+  }
+
 }
 
 function calculateDosage() {
-  const uv = Number(document.getElementById("uvInput").value);
-  const bodyArea = document.getElementById("bodyArea").value;
 
+  let uv = parseFloat(document.getElementById("uvInput").value);
+  const bodyArea = document.getElementById("bodyArea").value;
+  const skinType = document.getElementById("skinType").value;
   const result = document.getElementById("dosageResult");
 
-  if (!uv) {
-    result.textContent = "Please enter a UV level.";
+  if (isNaN(uv)) {
+    uv = getCurrentUV();
+  }
+
+  if (uv === null || isNaN(uv)) {
+
+    result.textContent =
+      "No UV value available. Visit the UV Dashboard or enter UV manually.";
+
     return;
   }
 
-  let message;
+  if (!skinType) {
 
-  if (uv <= 2) message = "Light protection recommended.";
-  else if (uv <= 5) message = "Moderate sunscreen use.";
-  else if (uv <= 7) message = "Generous sunscreen recommended.";
-  else message = "High sunscreen protection required.";
+    result.textContent =
+      "Please select your skin type.";
 
-  result.textContent = message + " Area: " + bodyArea;
+    return;
+  }
+
+  let amount = "";
+  let spf = "SPF 30";
+  let reapply = "Every 2 hours";
+
+
+  /* body area dosage */
+
+  if (bodyArea === "face") {
+    amount = "1 teaspoon for face and neck";
+  }
+
+  else if (bodyArea === "arms") {
+    amount = "1.5 teaspoons for face and arms";
+  }
+
+  else {
+    amount = "3 teaspoons for exposed body areas";
+  }
+
+
+  /* skin type SPF */
+
+  if (skinType === "1" || skinType === "2") {
+    spf = "SPF 50+";
+  }
+
+  else if (skinType === "3" || skinType === "4") {
+    spf = "SPF 30+ to SPF 50";
+  }
+
+  else {
+    spf = "SPF 30";
+  }
+
+
+  /* UV strength adjustment */
+
+  if (uv >= 8) {
+    spf = "SPF 50+";
+    reapply = "Every 2 hours";
+  }
+
+  else if (uv >= 6) {
+    reapply = "Every 2 hours";
+  }
+
+  else if (uv >= 3) {
+    reapply = "Every 3 hours";
+  }
+
+  else {
+    reapply = "As needed";
+  }
+
+
+  result.innerHTML = `
+    <strong>UV level used:</strong> ${uv}<br><br>
+    <strong>Recommended SPF:</strong> ${spf}<br><br>
+    <strong>Suggested amount:</strong> ${amount}<br><br>
+    <strong>Reapply:</strong> ${reapply}
+  `;
+
 }
+
 
 function openReminderModal() {
   document.getElementById("reminderModal").classList.add("show");
@@ -51,27 +151,218 @@ function closeReminderModal() {
   document.getElementById("reminderModal").classList.remove("show");
 }
 
-function saveReminder() {
-  const email = document.getElementById("reminderEmail").value;
-  const time = document.getElementById("reminderTime").value;
 
-  if (!email || !time) {
-    alert("Please enter email and time.");
+
+function getReminderIntervalByUv(uv) {
+
+  if (uv <= 2) return 4;
+  if (uv <= 5) return 3;
+  if (uv <= 7) return 2;
+
+  return 1;
+
+}
+
+function suggestReminderInterval() {
+
+  const uv = getCurrentUV();
+  const suggestionBox = document.getElementById("reminderSuggestion");
+
+  if (uv === null) {
+
+    suggestionBox.textContent =
+      "No UV data available. Visit the UV Dashboard first.";
+
     return;
   }
 
-  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+  const intervalHours = getReminderIntervalByUv(uv);
 
-  reminders.push({
-    email,
-    time
-  });
+  suggestionBox.textContent =
+    `Suggested reminder interval: every ${intervalHours} hour(s) based on UV ${uv}.`;
 
-  localStorage.setItem("reminders", JSON.stringify(reminders));
-
-  alert("Reminder saved.");
-
-  closeReminderModal();
 }
 
-window.onload = updateCurrentUVDisplay;
+
+
+function getSavedReminders() {
+  return JSON.parse(localStorage.getItem("reminders")) || [];
+}
+
+function setSavedReminders(reminders) {
+  localStorage.setItem("reminders", JSON.stringify(reminders));
+}
+
+
+function saveReminder() {
+
+  const email = document.getElementById("reminderEmail").value.trim();
+  const reminderTime = document.getElementById("reminderTime").value;
+  const uv = getCurrentUV();
+  const result = document.getElementById("reminderResult");
+
+  if (!email || !reminderTime) {
+
+    result.textContent =
+      "Please enter email and reminder time.";
+
+    return;
+  }
+
+  if (uv === null) {
+
+    result.textContent =
+      "No UV data found. Visit the UV Dashboard first.";
+
+    return;
+  }
+
+  const repeatIntervalHours = getReminderIntervalByUv(uv);
+
+  const reminder = {
+
+    id: Date.now(),
+    email,
+    reminderTime,
+    uvLevel: uv,
+    repeatIntervalHours
+
+  };
+
+  const reminders = getSavedReminders();
+
+  reminders.push(reminder);
+
+  setSavedReminders(reminders);
+
+  result.textContent =
+    `Reminder saved for ${email} at ${formatDateTime(reminderTime)}. Repeats every ${repeatIntervalHours} hour(s).`;
+
+  renderReminderList();
+
+  scheduleReminder(reminder);
+
+  closeReminderModal();
+
+  document.getElementById("reminderEmail").value = "";
+  document.getElementById("reminderTime").value = "";
+
+}
+
+function renderReminderList() {
+
+  const reminderList = document.getElementById("reminderList");
+  const reminders = getSavedReminders();
+
+  if (reminders.length === 0) {
+
+    reminderList.innerHTML =
+      "No reminders saved yet.";
+
+    return;
+  }
+
+  reminderList.innerHTML = reminders.map(reminder => {
+
+    const dateText =
+      reminder.reminderTime
+        ? formatDateTime(reminder.reminderTime)
+        : "Not specified";
+
+    const uvText =
+      reminder.uvLevel ?? "Unknown";
+
+    const repeatText =
+      reminder.repeatIntervalHours ?? "Unknown";
+
+    return `
+      <div class="list-item">
+        <strong>Email:</strong> ${reminder.email}<br>
+        <strong>First reminder:</strong> ${dateText}<br>
+        <strong>UV level:</strong> ${uvText}<br>
+        <strong>Repeat interval:</strong> every ${repeatText} hour(s)
+      </div>
+    `;
+
+  }).join("");
+
+}
+
+
+function formatDateTime(dateTimeString) {
+
+  const date = new Date(dateTimeString);
+
+  if (isNaN(date.getTime())) {
+    return "Invalid date";
+  }
+
+  return date.toLocaleString();
+
+}
+
+
+let reminderTimers = [];
+
+function scheduleReminder(reminder) {
+
+  const firstTime = new Date(reminder.reminderTime).getTime();
+  const now = Date.now();
+
+  const delay = firstTime - now;
+
+  if (delay <= 0) {
+    return;
+  }
+
+  const firstTimer = setTimeout(() => {
+
+    sendReminderNotification(reminder);
+
+    const repeatTimer = setInterval(() => {
+
+      sendReminderNotification(reminder);
+
+    }, reminder.repeatIntervalHours * 60 * 60 * 1000);
+
+    reminderTimers.push(repeatTimer);
+
+  }, delay);
+
+  reminderTimers.push(firstTimer);
+
+}
+
+
+function sendReminderNotification(reminder) {
+
+  console.log(
+    `Reminder for ${reminder.email}: Time to reapply sunscreen.`
+  );
+
+}
+
+
+function loadAndScheduleReminders() {
+
+  const reminders = getSavedReminders();
+
+  reminders.forEach(reminder => {
+
+    if (reminder.reminderTime) {
+      scheduleReminder(reminder);
+    }
+
+  });
+
+  renderReminderList();
+
+}
+
+window.onload = function () {
+
+  updateCurrentUVDisplay();
+
+  loadAndScheduleReminders();
+
+};
