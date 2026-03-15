@@ -14,52 +14,44 @@ async function loadMelanomaChart() {
 
   try {
     const res = await fetch(`${API_BASE}/cancer-stats`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
     const data = await res.json();
 
     const rawItems = (data && data.items) ? data.items : [];
 
+    // Keep Persons, All ages combined only
     const items = rawItems
-      .filter(row => row.sex === "Persons")
+      .filter(row =>
+        row.sex === "Persons" &&
+        row.age_group === "All ages combined" // present in your dataset
+        && row.year >= 1983
+      )
       .map(row => {
         const incidence = parseFloat(row.incidence_rate);
         const mortality = parseFloat(row.mortality_rate);
         return {
           year: row.year,
-          incidence,
-          mortality
+          // allow incidence to be NaN; Chart.js will show a gap
+          incidence: Number.isFinite(incidence) ? incidence : null,
+          mortality: Number.isFinite(mortality) ? mortality : null
         };
       })
-      .filter(row =>
-        Number.isFinite(row.incidence) &&
-        Number.isFinite(row.mortality)
-      );
+      // require at least mortality to be present so the year is usable
+      .filter(row => row.mortality !== null);
 
     if (!items.length) {
       loader.textContent = "No melanoma data available.";
       return;
     }
 
-    const byYear = new Map();
+    // Sort by year and build series
+    items.sort((a, b) => a.year - b.year);
 
-    for (const row of items) {
-      if (!byYear.has(row.year)) {
-        byYear.set(row.year, { sumInc: 0, sumMort: 0, n: 0 });
-      }
-      const y = byYear.get(row.year);
-      y.sumInc += row.incidence;
-      y.sumMort += row.mortality;
-      y.n += 1;
-    }
-
-    const years = Array.from(byYear.keys()).sort((a, b) => a - b);
-    const incidence = years.map(year => {
-      const y = byYear.get(year);
-      return y.sumInc / y.n;
-    });
-    const mortality = years.map(year => {
-      const y = byYear.get(year);
-      return y.sumMort / y.n;
-    });
+    const years = items.map(row => row.year);
+    const incidence = items.map(row => row.incidence);
+    const mortality = items.map(row => row.mortality);
 
     const ctx = document.getElementById("melanomaChart").getContext("2d");
 
@@ -77,6 +69,7 @@ async function loadMelanomaChart() {
             data: incidence,
             borderColor: "#0b3c5d",
             backgroundColor: "rgba(11, 60, 93, 0.1)",
+            spanGaps: false, // gaps where incidence is null
             tension: 0.2
           },
           {
@@ -84,6 +77,7 @@ async function loadMelanomaChart() {
             data: mortality,
             borderColor: "#dc2626",
             backgroundColor: "rgba(220, 38, 38, 0.1)",
+            spanGaps: true,
             tension: 0.2
           }
         ]
@@ -99,7 +93,9 @@ async function loadMelanomaChart() {
           legend: { position: "bottom" }
         },
         scales: {
-          x: { title: { display: true, text: "Year" } },
+          x: {
+            title: { display: true, text: "Year" }
+          },
           y: {
             title: { display: true, text: "Rate per 100,000" },
             beginAtZero: true
@@ -114,6 +110,7 @@ async function loadMelanomaChart() {
     loader.textContent = "Error loading melanoma data.";
   }
 }
+
 
 // ---------- NEW: Yearly UV summary ----------
 async function loadYearlyUvSummary() {
