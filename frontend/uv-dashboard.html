@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SunSafety - UV Dashboard</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/uv-dashboard.css">
@@ -14,7 +16,6 @@
 <body>
 
   <nav class="site-navbar">
-
     <a href="index.html" class="site-navbar-left">
       <div class="site-navbar-logo">UV</div>
       <div class="site-navbar-title">SunSafety</div>
@@ -26,7 +27,6 @@
       <a href="awareness.html">Awareness</a>
       <a href="protection-tips.html">Protection Tips</a>
     </div>
-
   </nav>
 
   <main class="container">
@@ -36,12 +36,12 @@
         <div class="eyebrow">LIVE UV DASHBOARD</div>
 
         <h1 class="hero-title">
-          Check <span>today’s UV</span><br>
+          Check <span>today's UV</span><br>
           before you head outside
         </h1>
 
         <p class="hero-description">
-          Get the current UV level based on location, see today’s peak UV time,
+          Get the current UV level based on location, see today's peak UV time,
           and receive simple sun protection information in one place.
         </p>
 
@@ -66,20 +66,20 @@
         <div class="uv-overview">
           <p class="uv-label">Current UV</p>
           <div class="uv-main-row">
-            <div id="uvNumber" class="uv-number">8.0</div>
-            <div id="uvPill" class="uv-pill">Very High</div>
+            <div id="uvNumber" class="uv-number">-</div>
+            <div id="uvPill" class="uv-pill">-</div>
           </div>
         </div>
 
         <div class="mini-grid">
           <div class="mini-card">
             <p class="mini-label">Estimated time to sunburn</p>
-            <p id="burnTime" class="mini-value">10–15 min</p>
+            <p id="burnTime" class="mini-value">-</p>
           </div>
 
           <div class="mini-card">
             <p class="mini-label">Peak time</p>
-            <p id="peakTime" class="mini-value">14:00</p>
+            <p id="peakTime" class="mini-value">-</p>
           </div>
 
           <div class="mini-card">
@@ -99,8 +99,8 @@
       <div class="card">
         <a href="protection-tips.html" class="tip-link-card">
           <div class="tip-link-text">
-            <strong>Sun Protection required</strong>
-            <span>See more</span>
+            <strong id="tipHeadline">Sun protection required</strong>
+            <span id="tipSubtext">See what to wear and which SPF to use</span>
           </div>
         </a>
 
@@ -122,4 +122,5 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/uv-dashboard.js"></script>
 </body>
+
 </html>

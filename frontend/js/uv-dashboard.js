@@ -34,6 +34,38 @@ function getPillStyle(level) {
   return { bg: "#eadcff", color: "#6e32b6" };
 }
 
+/* NEW: copy for tip card based on risk level */
+function getProtectionCopy(riskLevel) {
+  switch (riskLevel) {
+    case "Low":
+      return {
+        headline: "Minimal sun protection needed",
+        subtext: "UV is low. Protection advised only for extended outdoor time."
+      };
+    case "Moderate":
+      return {
+        headline: "Sun protection recommended",
+        subtext: "Slip on clothing, slop on SPF 30+, slap on a hat and slide on sunglasses."
+      };
+    case "High":
+      return {
+        headline: "Sun protection required",
+        subtext: "Use SPF 30+ or higher, wear a hat and sunglasses, and seek shade at midday."
+      };
+    case "Very High":
+      return {
+        headline: "Strong sun protection required",
+        subtext: "SPF 50+, long sleeves, hat and sunglasses. Avoid direct sun around midday."
+      };
+    case "Extreme":
+    default:
+      return {
+        headline: "Extreme UV – take extra care",
+        subtext: "Avoid midday sun, stay in shade, wear full cover and reapply SPF 50+ every 2 hours."
+      };
+  }
+}
+
 function showUvAlert(uv, riskLevel) {
   const alertBox = document.getElementById("uvAlert");
   const alertTitle = document.getElementById("uvAlertTitle");
@@ -44,21 +76,24 @@ function showUvAlert(uv, riskLevel) {
   if (uv >= 11) {
     alertBox.className = "uv-alert extreme";
     alertTitle.textContent = "Extreme UV Alert";
-    alertMessage.textContent = "Avoid direct sun exposure if possible. Seek shade immediately, wear protective clothing, and apply SPF50+ sunscreen.";
+    alertMessage.textContent =
+      "Avoid direct sun exposure if possible. Seek shade immediately, wear protective clothing, and apply SPF50+ sunscreen.";
     return;
   }
 
   if (uv >= 8) {
     alertBox.className = "uv-alert very-high";
     alertTitle.textContent = "Very High UV Alert";
-    alertMessage.textContent = "Your UV level is very high. Find shade, wear sunglasses, and apply SPF50+ sunscreen now.";
+    alertMessage.textContent =
+      "Your UV level is very high. Find shade, wear sunglasses, and apply SPF50+ sunscreen now.";
     return;
   }
 
   if (uv >= 6) {
     alertBox.className = "uv-alert high";
     alertTitle.textContent = "High UV Alert";
-    alertMessage.textContent = "UV is high. Wear protective clothing and apply sunscreen before staying outdoors.";
+    alertMessage.textContent =
+      "UV is high. Wear protective clothing and apply sunscreen before staying outdoors.";
     return;
   }
 }
@@ -79,7 +114,7 @@ function drawChart(times, values) {
     uvChartInstance.destroy();
   }
 
-  const labels = times.map(time => time.slice(11, 16));
+  const labels = times.map((time) => time.slice(11, 16));
 
   uvChartInstance = new Chart(ctx, {
     type: "line",
@@ -143,6 +178,7 @@ async function fetchUvData(lat, lon) {
   return res.json();
 }
 
+/* main render function */
 function renderAll(data, lat, lon, label) {
   const uv = Number(data.current?.uv_index || 0);
   const temp = data.current?.temperature_2m;
@@ -152,17 +188,29 @@ function renderAll(data, lat, lon, label) {
   const risk = getRiskInfo(uv);
   const pill = getPillStyle(risk.level);
 
+  // update “Sun protection” tip card based on risk
+  const protectionCopy = getProtectionCopy(risk.level);
+  const tipHeadlineEl = document.getElementById("tipHeadline");
+  const tipSubtextEl = document.getElementById("tipSubtext");
+  if (tipHeadlineEl && tipSubtextEl) {
+    tipHeadlineEl.textContent = protectionCopy.headline;
+    tipSubtextEl.textContent = protectionCopy.subtext;
+  }
+
   document.getElementById("uvNumber").textContent = uv.toFixed(1);
   localStorage.setItem("currentUV", uv);
 
-  document.getElementById("uvPill").textContent = risk.level;
-  document.getElementById("uvPill").style.background = pill.bg;
-  document.getElementById("uvPill").style.color = pill.color;
+  const uvPillEl = document.getElementById("uvPill");
+  uvPillEl.textContent = risk.level;
+  uvPillEl.style.background = pill.bg;
+  uvPillEl.style.color = pill.color;
 
   document.getElementById("burnTime").textContent = risk.burn;
   document.getElementById("peakTime").textContent = findPeakTime(hourlyTimes, hourlyUv);
-  document.getElementById("tempValue").textContent = temp !== undefined ? `${temp}°C` : "--";
-  document.getElementById("coordValue").textContent = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+  document.getElementById("tempValue").textContent =
+    temp !== undefined ? `${temp}°C` : "--";
+  document.getElementById("coordValue").textContent =
+    `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
   document.getElementById("locationChip").textContent = label;
   document.getElementById("statusText").textContent = `Loaded UV data for ${label}.`;
 
@@ -173,11 +221,13 @@ function renderAll(data, lat, lon, label) {
 
 async function loadCurrentLocation() {
   if (!navigator.geolocation) {
-    document.getElementById("statusText").textContent = "Geolocation is not supported in this browser.";
+    document.getElementById("statusText").textContent =
+      "Geolocation is not supported in this browser.";
     return;
   }
 
-  document.getElementById("statusText").textContent = "Loading your current location...";
+  document.getElementById("statusText").textContent =
+    "Loading your current location...";
 
   navigator.geolocation.getCurrentPosition(
     async (position) => {
@@ -188,12 +238,14 @@ async function loadCurrentLocation() {
         const data = await fetchUvData(lat, lon);
         renderAll(data, lat, lon, "Current Location");
       } catch (error) {
-        document.getElementById("statusText").textContent = "Failed to load UV data.";
+        document.getElementById("statusText").textContent =
+          "Failed to load UV data.";
         console.error(error);
       }
     },
     () => {
-      document.getElementById("statusText").textContent = "Location permission was denied.";
+      document.getElementById("statusText").textContent =
+        "Location permission was denied.";
     }
   );
 }

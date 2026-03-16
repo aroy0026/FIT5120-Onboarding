@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
   <title>SunSafety - Protection Tips</title>
 
   <link rel="stylesheet" href="css/common.css">
@@ -25,63 +27,64 @@
     </div>
   </nav>
 
+
   <main class="container">
 
-    <section class="hero">
-      <div>
-        <div class="eyebrow">SUN PROTECTION GUIDE</div>
+    <!-- Hero + Current UV -->
+    <div class="uv-header-row">
+      <section class="hero">
+        <div>
+          <div class="eyebrow">SUN PROTECTION GUIDE</div>
 
-        <h1 class="hero-title">
-          Protect <span>your skin</span><br>
-          before you go outside
-        </h1>
+          <h1 class="hero-title">
+            Protect <span>your skin</span><br>
+            before you go outside
+          </h1>
 
-        <p class="hero-description">
-          Learn how much sunscreen to use, select your skin type,
-          and follow simple protection tips for strong UV conditions.
-        </p>
-      </div>
-    </section>
-
-    <section class="grid">
-
-      <!-- Sunscreen Calculator -->
-      <div class="card">
-        <h3>Sunscreen Protection Calculator</h3>
-
-        <div id="currentUvDosage" class="uv-badge">
-          Current UV: Not available
+          <p class="hero-description">
+            Learn how much sunscreen to use, select your skin type,
+            and follow simple protection tips for strong UV conditions.
+          </p>
         </div>
+      </section>
 
-        <label>UV Level</label>
+      <div class="global-uv-card">
+        <div class="global-uv-label">Current UV</div>
+        <div id="globalUvValue" class="global-uv-value">Not available</div>
+        <button class="global-uv-refresh" onclick="useCurrentUV()">
+          Use current UV
+        </button>
+      </div>
+    </div>
+
+    <!-- Single combined card -->
+    <section class="card card--primary single-card">
+
+      <!-- Calculator section -->
+      <div class="card-header card-header--inline">
+        <h3>Sunscreen Protection & Clothing Guide</h3>
+        <div id="uvUsedBadge" class="uv-badge uv-badge--small">
+          UV level used: Not set
+        </div>
+      </div>
+
+      <div class="card-section">
+        <label class="field-label">UV Level</label>
         <input id="uvInput" type="number" placeholder="Example: 8">
 
-        <label>Select your Skin Type</label>
-
+        <label class="field-label">Select your Skin Type</label>
         <div class="skin-type-picker">
-          <button class="skin-tile type-1" onclick="selectSkinType(1)">
-            <span>Type 1</span>
-          </button>
-          <button class="skin-tile type-2" onclick="selectSkinType(2)">
-            <span>Type 2</span>
-          </button>
-          <button class="skin-tile type-3" onclick="selectSkinType(3)">
-            <span>Type 3</span>
-          </button>
-          <button class="skin-tile type-4" onclick="selectSkinType(4)">
-            <span>Type 4</span>
-          </button>
-          <button class="skin-tile type-5" onclick="selectSkinType(5)">
-            <span>Type 5</span>
-          </button>
-          <button class="skin-tile type-6" onclick="selectSkinType(6)">
-            <span>Type 6</span>
-          </button>
+          <button class="skin-tile type-1" onclick="selectSkinType(1)"><span>Type 1</span></button>
+          <button class="skin-tile type-2" onclick="selectSkinType(2)"><span>Type 2</span></button>
+          <button class="skin-tile type-3" onclick="selectSkinType(3)"><span>Type 3</span></button>
+          <button class="skin-tile type-4" onclick="selectSkinType(4)"><span>Type 4</span></button>
+          <button class="skin-tile type-5" onclick="selectSkinType(5)"><span>Type 5</span></button>
+          <button class="skin-tile type-6" onclick="selectSkinType(6)"><span>Type 6</span></button>
         </div>
 
         <input type="hidden" id="skinType" value="">
 
-        <label>Choose body area</label>
+        <label class="field-label">Choose body area</label>
         <select id="bodyArea">
           <option value="face">Face only</option>
           <option value="arms">Face and arms</option>
@@ -102,48 +105,25 @@
         </div>
       </div>
 
-      <!-- Reminder system -->
-      <div class="card">
-        <h3>Reminder System</h3>
+      <!-- Divider -->
+      <div class="card-divider"></div>
 
-        <div id="currentUvReminder" class="uv-badge">
-          Current UV: Not available
-        </div>
-
-        <div class="button-row">
-          <button class="primary-btn" onclick="openReminderModal()">Set Reminder</button>
-          <button class="secondary-btn" onclick="suggestReminderInterval()">Suggest Interval</button>
-        </div>
-
-        <div id="reminderSuggestion" class="result-box">
-          UV-based reminder suggestion will appear here.
-        </div>
-
-        <div id="reminderResult" class="result-box">
-          No reminder has been set yet.
-        </div>
-
-        <h3 style="margin-top:20px;">Reminder List</h3>
-
-        <div id="reminderList" class="result-box">
-          No reminders saved yet.
-        </div>
-      </div>
-
-      <!-- Clothing suggestions based on UV -->
-      <div class="card">
-        <h3>Clothing suggestions for this UV</h3>
-
-        <p class="hero-description" style="font-size:14px;margin-bottom:12px;">
-          Based on the current UV from the dashboard, see what to wear outdoors.
-        </p>
-
-        <div id="clothingUvLabel" class="uv-badge clothing-uv-badge">
-          UV level: not available
+      <!-- Clothing section -->
+      <div class="card-section">
+        <div class="card-header card-header--inline">
+          <div>
+            <h3>Clothing suggestions</h3>
+            <p id="clothingSourceText" class="card-subtitle">
+              Clothing based on current UV when available.
+            </p>
+          </div>
+          <div id="clothingUvLabel" class="uv-badge clothing-uv-badge">
+            UV level: not available
+          </div>
         </div>
 
         <div class="clothing-grid">
-          <div class="wear-card" id="wearTopCard">
+          <div class="wear-card">
             <div class="wear-card-icon">👕</div>
             <div class="wear-card-content">
               <h4>Top</h4>
@@ -153,7 +133,7 @@
             </div>
           </div>
 
-          <div class="wear-card" id="wearBottomCard">
+          <div class="wear-card">
             <div class="wear-card-icon">👖</div>
             <div class="wear-card-content">
               <h4>Bottom</h4>
@@ -163,7 +143,7 @@
             </div>
           </div>
 
-          <div class="wear-card" id="wearHatCard">
+          <div class="wear-card">
             <div class="wear-card-icon">👒</div>
             <div class="wear-card-content">
               <h4>Hat</h4>
@@ -173,7 +153,7 @@
             </div>
           </div>
 
-          <div class="wear-card" id="wearSunglassesCard">
+          <div class="wear-card">
             <div class="wear-card-icon">🕶️</div>
             <div class="wear-card-content">
               <h4>Sunglasses</h4>
@@ -183,7 +163,7 @@
             </div>
           </div>
 
-          <div class="wear-card" id="wearExtraCard">
+          <div class="wear-card">
             <div class="wear-card-icon">☀️</div>
             <div class="wear-card-content">
               <h4>Extra care</h4>
@@ -196,28 +176,9 @@
       </div>
 
     </section>
-
   </main>
 
-  <!-- Reminder modal -->
-  <div id="reminderModal" class="modal">
-    <div class="modal-box">
-      <h3>Set Reminder</h3>
-
-      <label>Email address</label>
-      <input id="reminderEmail" type="email">
-
-      <label>Reminder time</label>
-      <input id="reminderTime" type="datetime-local">
-
-      <div class="modal-buttons">
-        <button onclick="closeReminderModal()">Cancel</button>
-        <button onclick="saveReminder()">Save</button>
-      </div>
-    </div>
-  </div>
-
   <script src="js/protection-tips.js"></script>
-
 </body>
+
 </html>

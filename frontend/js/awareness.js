@@ -381,7 +381,7 @@ function drawUvChart(items, stateCode, cityName, year) {
       labels: xLabels,
       datasets: [
         {
-          label: `Daily peak UV – ${cityName}, ${stateCode} (${year})`,
+          label: `Daily peak UV - ${cityName}, ${stateCode} (${year})`,
           data: values,
           borderColor: "#0284c7",
           backgroundColor: "rgba(2, 132, 199, 0.1)",

@@ -1,22 +1,55 @@
+
 function getCurrentUV() {
   const uv = localStorage.getItem("currentUV");
-
   if (uv !== null && uv !== "") {
-    return Number(uv);
+    const num = Number(uv);
+    return Number.isFinite(num) ? num : null;
   }
-
   return null;
 }
 
-function updateCurrentUVDisplay() {
-  const uv = getCurrentUV();
-  const text = uv !== null ? `Current UV: ${uv}` : "Current UV: Not available";
+function getUvBandLabel(uv) {
+  const v = Number(uv);
+  if (v <= 2) return "Low";
+  if (v <= 5) return "Moderate";
+  if (v <= 7) return "High";
+  return "Very high / Extreme";
+}
 
-  document.getElementById("currentUvDosage").textContent = text;
-  document.getElementById("currentUvReminder").textContent = text;
+
+function updateUvDisplays(uv) {
+  const globalValEl = document.getElementById("globalUvValue");
+  const uvUsedBadge = document.getElementById("uvUsedBadge");
+  const clothingUvLabel = document.getElementById("clothingUvLabel");
+
+  if (globalValEl) {
+    globalValEl.textContent =
+      uv !== null ? uv.toFixed(2) : "Not available";
+  }
+
+  if (uvUsedBadge) {
+    uvUsedBadge.textContent =
+      uv !== null ? `UV level used: ${uv}` : "UV level used: Not set";
+  }
+
+  if (clothingUvLabel) {
+    if (uv !== null) {
+      clothingUvLabel.textContent = `UV - ${getUvBandLabel(uv)}`;
+    } else {
+      clothingUvLabel.textContent = "UV level: not available";
+    }
+  }
+}
+
+function initUvFromStorage() {
+  const uv = getCurrentUV();
+  updateUvDisplays(uv);
 
   if (uv !== null) {
-    document.getElementById("uvInput").value = uv;
+    const uvInput = document.getElementById("uvInput");
+    if (uvInput) {
+      uvInput.value = uv;
+    }
   }
 }
 
@@ -28,8 +61,20 @@ function useCurrentUV() {
     return;
   }
 
-  document.getElementById("uvInput").value = uv;
-  renderClothingAdviceFromCurrentUV();
+  const uvInput = document.getElementById("uvInput");
+  if (uvInput) {
+    uvInput.value = uv;
+  }
+
+  updateUvDisplays(uv);
+
+  const clothingSource = document.getElementById("clothingSourceText");
+  if (clothingSource) {
+    clothingSource.textContent =
+      "Clothing based on current UV from the dashboard.";
+  }
+
+  renderClothingAdvice(uv);
 }
 
 function selectSkinType(type) {
@@ -43,8 +88,12 @@ function selectSkinType(type) {
   }
 }
 
+/* Calculate Protection using manual or current UV,
+   but DO NOT overwrite currentUV in localStorage,
+   and DO NOT touch the top-right global badge. */
 function calculateDosage() {
-  let uv = parseFloat(document.getElementById("uvInput").value);
+  const uvInputEl = document.getElementById("uvInput");
+  let uv = uvInputEl ? parseFloat(uvInputEl.value) : NaN;
   const bodyArea = document.getElementById("bodyArea").value;
   const skinType = document.getElementById("skinType").value;
   const result = document.getElementById("dosageResult");
@@ -69,7 +118,6 @@ function calculateDosage() {
   let spf = "SPF 30";
   let reapply = "Every 2 hours";
 
-  /* body area dosage */
   if (bodyArea === "face") {
     amount = "1 teaspoon for face and neck";
   } else if (bodyArea === "arms") {
@@ -78,7 +126,6 @@ function calculateDosage() {
     amount = "3 teaspoons for exposed body areas";
   }
 
-  /* skin type SPF */
   if (skinType === "1" || skinType === "2") {
     spf = "SPF 50+";
   } else if (skinType === "3" || skinType === "4") {
@@ -87,7 +134,6 @@ function calculateDosage() {
     spf = "SPF 30";
   }
 
-  /* UV strength adjustment */
   if (uv >= 8) {
     spf = "SPF 50+";
     reapply = "Every 2 hours";
@@ -106,180 +152,19 @@ function calculateDosage() {
     <strong>Reapply:</strong> ${reapply}
   `;
 
-  localStorage.setItem("currentUV", uv);
-  renderClothingAdviceFromCurrentUV();
-}
+  // Do NOT touch localStorage.currentUV here.
+  // Do NOT call updateUvDisplays(uv) - global "Current UV" stays old.
 
-function openReminderModal() {
-  document.getElementById("reminderModal").classList.add("show");
-}
-
-function closeReminderModal() {
-  document.getElementById("reminderModal").classList.remove("show");
-}
-
-function getReminderIntervalByUv(uv) {
-  if (uv <= 2) return 4;
-  if (uv <= 5) return 3;
-  if (uv <= 7) return 2;
-  return 1;
-}
-
-function suggestReminderInterval() {
-  const uv = getCurrentUV();
-  const suggestionBox = document.getElementById("reminderSuggestion");
-
-  if (uv === null) {
-    suggestionBox.textContent =
-      "No UV data available. Visit the UV Dashboard first.";
-    return;
+  const clothingSource = document.getElementById("clothingSourceText");
+  if (clothingSource) {
+    clothingSource.textContent =
+      "Clothing based on the UV you entered above.";
   }
 
-  const intervalHours = getReminderIntervalByUv(uv);
-
-  suggestionBox.textContent =
-    `Suggested reminder interval: every ${intervalHours} hour(s) based on UV ${uv}.`;
+  renderClothingAdvice(uv);
 }
 
-function getSavedReminders() {
-  return JSON.parse(localStorage.getItem("reminders")) || [];
-}
-
-function setSavedReminders(reminders) {
-  localStorage.setItem("reminders", JSON.stringify(reminders));
-}
-
-function saveReminder() {
-  const email = document.getElementById("reminderEmail").value.trim();
-  const reminderTime = document.getElementById("reminderTime").value;
-  const uv = getCurrentUV();
-  const result = document.getElementById("reminderResult");
-
-  if (!email || !reminderTime) {
-    result.textContent =
-      "Please enter email and reminder time.";
-    return;
-  }
-
-  if (uv === null) {
-    result.textContent =
-      "No UV data found. Visit the UV Dashboard first.";
-    return;
-  }
-
-  const repeatIntervalHours = getReminderIntervalByUv(uv);
-
-  const reminder = {
-    id: Date.now(),
-    email,
-    reminderTime,
-    uvLevel: uv,
-    repeatIntervalHours
-  };
-
-  const reminders = getSavedReminders();
-  reminders.push(reminder);
-  setSavedReminders(reminders);
-
-  result.textContent =
-    `Reminder saved for ${email} at ${formatDateTime(reminderTime)}. Repeats every ${repeatIntervalHours} hour(s).`;
-
-  renderReminderList();
-  scheduleReminder(reminder);
-  closeReminderModal();
-
-  document.getElementById("reminderEmail").value = "";
-  document.getElementById("reminderTime").value = "";
-}
-
-function renderReminderList() {
-  const reminderList = document.getElementById("reminderList");
-  const reminders = getSavedReminders();
-
-  if (reminders.length === 0) {
-    reminderList.innerHTML =
-      "No reminders saved yet.";
-    return;
-  }
-
-  reminderList.innerHTML = reminders.map(reminder => {
-    const dateText =
-      reminder.reminderTime
-        ? formatDateTime(reminder.reminderTime)
-        : "Not specified";
-
-    const uvText =
-      reminder.uvLevel ?? "Unknown";
-
-    const repeatText =
-      reminder.repeatIntervalHours ?? "Unknown";
-
-    return `
-      <div class="list-item">
-        <strong>Email:</strong> ${reminder.email}<br>
-        <strong>First reminder:</strong> ${dateText}<br>
-        <strong>UV level:</strong> ${uvText}<br>
-        <strong>Repeat interval:</strong> every ${repeatText} hour(s)
-      </div>
-    `;
-  }).join("");
-}
-
-function formatDateTime(dateTimeString) {
-  const date = new Date(dateTimeString);
-
-  if (isNaN(date.getTime())) {
-    return "Invalid date";
-  }
-
-  return date.toLocaleString();
-}
-
-let reminderTimers = [];
-
-function scheduleReminder(reminder) {
-  const firstTime = new Date(reminder.reminderTime).getTime();
-  const now = Date.now();
-
-  const delay = firstTime - now;
-
-  if (delay <= 0) {
-    return;
-  }
-
-  const firstTimer = setTimeout(() => {
-    sendReminderNotification(reminder);
-
-    const repeatTimer = setInterval(() => {
-      sendReminderNotification(reminder);
-    }, reminder.repeatIntervalHours * 60 * 60 * 1000);
-
-    reminderTimers.push(repeatTimer);
-  }, delay);
-
-  reminderTimers.push(firstTimer);
-}
-
-function sendReminderNotification(reminder) {
-  console.log(
-    `Reminder for ${reminder.email}: Time to reapply sunscreen.`
-  );
-}
-
-function loadAndScheduleReminders() {
-  const reminders = getSavedReminders();
-
-  reminders.forEach(reminder => {
-    if (reminder.reminderTime) {
-      scheduleReminder(reminder);
-    }
-  });
-
-  renderReminderList();
-}
-
-/* --- Clothing advice based on UV --- */
-
+/* clothing advice logic */
 function getClothingAdviceForUv(uv) {
   const value = Number(uv);
   if (!Number.isFinite(value)) {
@@ -325,8 +210,7 @@ function getClothingAdviceForUv(uv) {
   }
 }
 
-function renderClothingAdviceFromCurrentUV() {
-  const uv = getCurrentUV();
+function renderClothingAdvice(uv) {
   const labelEl = document.getElementById("clothingUvLabel");
   const topEl = document.getElementById("wearTopText");
   const bottomEl = document.getElementById("wearBottomText");
@@ -340,7 +224,8 @@ function renderClothingAdviceFromCurrentUV() {
 
   if (uv === null || isNaN(uv)) {
     labelEl.textContent = "UV level: not available";
-    topEl.textContent = "Visit the UV Dashboard or enter a UV value to see clothing suggestions.";
+    topEl.textContent =
+      "Visit the UV Dashboard or enter a UV value to see clothing suggestions.";
     bottomEl.textContent = "";
     hatEl.textContent = "";
     sunglassesEl.textContent = "";
@@ -367,10 +252,11 @@ function renderClothingAdviceFromCurrentUV() {
   extraEl.textContent = advice.extra;
 }
 
-/* --- Init --- */
-
+/* init */
 window.onload = function () {
-  updateCurrentUVDisplay();
-  loadAndScheduleReminders();
-  renderClothingAdviceFromCurrentUV();
+  initUvFromStorage();
+  const uv = getCurrentUV();
+  if (uv !== null) {
+    renderClothingAdvice(uv);
+  }
 };

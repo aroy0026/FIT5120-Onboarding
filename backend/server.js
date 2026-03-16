@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const pool = require("./db"); // <-- import the pool
+const pool = require("./db");
 const app = express();
 
 app.use(cors());
@@ -11,15 +11,11 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// Add near your other routes in server.js
-
-// GET /uv-yearly-summary?state_code=VIC&city_name=Melbourne
 app.get("/uv-yearly-summary", async (req, res) => {
   try {
     const stateCode = req.query.state_code || "VIC";
     const cityName = req.query.city_name || "Melbourne";
 
-    // Resolve city_id
     const citySql = `
       SELECT c.city_id, c.city_name, s.state_code, s.state_name
       FROM dim_city c
@@ -106,16 +102,6 @@ app.get("/locations", async (req, res) => {
   }
 });
 
-/**
- * GET /uv-history
- * Required:
- *   state_code  - e.g. VIC
- *   city_name   - e.g. Melbourne
- * Optional:
- *   from        - ISO timestamp
- *   to          - ISO timestamp
- *   limit       - max rows (default 500)
- */
 app.get("/uv-history", async (req, res) => {
   try {
     const { state_code, city_name, year, limit_days } = req.query;
@@ -129,7 +115,6 @@ app.get("/uv-history", async (req, res) => {
     const params = [];
     let where = [];
 
-    // Resolve state + city -> city_id
     params.push(state_code);
     params.push(city_name);
 
@@ -148,7 +133,7 @@ app.get("/uv-history", async (req, res) => {
 
     const { city_id, state_name } = cityResult.rows[0];
 
-    // Build query on summary table
+
     const qParams = [city_id];
     where.push(`city_id = $1`);
 
@@ -196,7 +181,6 @@ app.get("/uv-history", async (req, res) => {
 });
 
 
-// server.js (add this near your other routes)
 app.get("/educational-resources", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -221,15 +205,12 @@ app.get("/educational-resources", async (req, res) => {
 });
 
 
-// db-health check: tries a lightweight query
 app.get("/db-health", async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT 1 AS ok"
     );
 
-    // or, to confirm table exists:
-    // const result = await pool.query("SELECT COUNT(*) FROM cancer_stats");
 
     res.json({
       status: "ok",
@@ -251,7 +232,7 @@ app.get("/cancer-stats", async (req, res) => {
   try {
     const { state, age_group, year, sex } = req.query;
 
-    // base query: melanoma only
+  
     const values = ["Melanoma of the skin"];
     let sql = `
       SELECT
@@ -287,7 +268,6 @@ app.get("/cancer-stats", async (req, res) => {
       sql += ` AND sex = $${values.length}`;
     }
 
-    // order for consistency
     sql += " ORDER BY year, state, age_group, sex";
 
     const result = await pool.query(sql, values);
