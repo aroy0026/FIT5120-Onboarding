@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
   <nav class="site-navbar">
     <a href="index.html" class="site-navbar-left">
       <div class="site-navbar-logo">UV</div>
@@ -21,15 +20,13 @@
 
     <div class="site-navbar-links">
       <a href="index.html">Home</a>
-      <a href="uv-dashboard.html">UV Dashboard</a>
+      <a href="uv-dashboard.html">UV Overview</a>
       <a href="awareness.html">Awareness</a>
       <a href="protection-tips.html" class="active">Protection Tips</a>
     </div>
   </nav>
 
-
   <main class="container">
-
     <!-- Hero + Current UV -->
     <div class="uv-header-row">
       <section class="hero">
@@ -48,29 +45,34 @@
         </div>
       </section>
 
+      <!-- Current UV card at top-right -->
       <div class="global-uv-card">
         <div class="global-uv-label">Current UV</div>
         <div id="globalUvValue" class="global-uv-value">Not available</div>
-        <button class="global-uv-refresh" onclick="useCurrentUV()">
-          Use current UV
-        </button>
       </div>
     </div>
 
-    <!-- Single combined card -->
+    <!-- Main card -->
     <section class="card card--primary single-card">
-
-      <!-- Calculator section -->
+      <!-- Calculator header -->
       <div class="card-header card-header--inline">
-        <h3>Sunscreen Protection & Clothing Guide</h3>
+        <h3>Sunscreen Protection &amp; Clothing Guide</h3>
         <div id="uvUsedBadge" class="uv-badge uv-badge--small">
           UV level used: Not set
         </div>
       </div>
 
+      <!-- Calculator section -->
       <div class="card-section">
         <label class="field-label">UV Level</label>
-        <input id="uvInput" type="number" placeholder="Example: 8">
+
+        <!-- Input + Use current UV on same row -->
+        <div class="uv-input-row">
+          <input id="uvInput" type="number" placeholder="Example: 8">
+          <button class="uv-inline-btn" onclick="useCurrentUV()">
+            Use current UV
+          </button>
+        </div>
 
         <label class="field-label">Select your Skin Type</label>
         <div class="skin-type-picker">
@@ -85,7 +87,7 @@
         <input type="hidden" id="skinType" value="">
 
         <label class="field-label">Choose body area</label>
-        <select id="bodyArea">
+        <select id="bodyArea" class="body-area-select">
           <option value="face">Face only</option>
           <option value="arms">Face and arms</option>
           <option value="full">Full exposed body</option>
@@ -94,9 +96,6 @@
         <div class="button-row">
           <button class="primary-btn" onclick="calculateDosage()">
             Calculate Protection
-          </button>
-          <button class="secondary-btn" onclick="useCurrentUV()">
-            Use Current UV
           </button>
         </div>
 
@@ -174,7 +173,6 @@
           </div>
         </div>
       </div>
-
     </section>
   </main>
 

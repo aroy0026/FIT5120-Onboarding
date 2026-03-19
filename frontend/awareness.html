@@ -21,7 +21,7 @@
 
     <div class="site-navbar-links">
       <a href="index.html">Home</a>
-      <a href="uv-dashboard.html">UV Dashboard</a>
+      <a href="uv-dashboard.html">UV Overview</a>
       <a href="awareness.html" class="active">Awareness</a>
       <a href="protection-tips.html">Protection Tips</a>
     </div>
@@ -29,21 +29,7 @@
 
   <main class="container">
 
-    <div class="card">
-      <div class="card-eyebrow">Data spotlight</div>
-      <h2 class="card-title">Melanoma incidence vs mortality</h2>
-      <p class="stat-caption">
-        Australia, Persons - incidence and mortality rates (per 100,000) over time from cancer stats table.
-      </p>
 
-      <div class="chart-box">
-        <p class="chart-label">Incidence vs mortality over time</p>
-        <div id="melanomaLoader" class="loader">Loading melanoma data…</div>
-        <div class="chart-container">
-          <canvas id="melanomaChart"></canvas>
-        </div>
-      </div>
-    </div>
 
     <div class="card">
       <div class="card-eyebrow">Long-term UV pattern</div>
@@ -57,6 +43,22 @@
         <div id="yearlyUvLoader" class="loader">Loading yearly UV…</div>
         <div class="chart-container">
           <canvas id="yearlyUvChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Data spotlight</div>
+      <h2 class="card-title">Melanoma incidence vs mortality</h2>
+      <p class="stat-caption">
+        Australia, Persons - incidence and mortality rates (per 100,000) over time from cancer stats table.
+      </p>
+
+      <div class="chart-box">
+        <p class="chart-label">Incidence vs mortality over time</p>
+        <div id="melanomaLoader" class="loader">Loading melanoma data…</div>
+        <div class="chart-container">
+          <canvas id="melanomaChart"></canvas>
         </div>
       </div>
     </div>
